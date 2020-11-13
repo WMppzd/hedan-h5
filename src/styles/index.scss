@@ -1,6 +1,10 @@
 @import './variables.scss';
 @import './minix';
 @import './common';
+
+$z_c:rgb(99, 97, 235);
+$bg_c:rgb(245, 246, 245);
+
 * {
     box-sizing: border-box;
 }
@@ -9,6 +13,7 @@ html,
 body {
     font-family: 'Helvetica Neue', Helvetica, STHeiTi, sans-serif;
 }
+
 p,
 ul,
 li,
@@ -42,17 +47,20 @@ input {
 .router-fade-leave-active {
     transition: opacity 0.3s;
 }
+
 .router-fade-enter,
 .router-fade-leave-active {
     opacity: 0;
 }
 
 .tab-wrapper {
+
     // .van-dropdown-menu {
     //     height: 10.67vw;
     // }
     .van-dropdown-item__content {
         position: relative;
+
         &::before {
             position: absolute;
             box-sizing: border-box;
@@ -68,17 +76,21 @@ input {
             transform: scaleY(0.5);
             z-index: 99;
         }
+
         .van-cell:not(:last-child)::after {
             left: 0px;
         }
     }
+
     .van-dropdown-item__option {
         text-align: center;
+
         .van-cell__value {
             display: none;
         }
     }
 }
+
 .home .van-hairline--top-bottom::after,
 .van-hairline-unset--top-bottom::after,
 .search-result .van-hairline--top-bottom::after,
@@ -90,6 +102,7 @@ input {
     font-size: 22px !important;
     color: #fff !important;
 }
+
 .van-circle svg {
     position: absolute;
     top: 0;
@@ -99,6 +112,7 @@ input {
     background: #e9cd67 !important;
     border-radius: 50% !important;
 }
+
 .flex {
     display: flex;
     justify-content: space-between;
@@ -107,10 +121,43 @@ input {
 
 
 
-.class-type-img74{
+.class-type-img74 {
     width: 74px !important;
 }
 
-.class-type-img116{
-    width: 116px  !important;
+.class-type-img116 {
+    width: 116px !important;
+}
+
+.selectBusiness-container {
+    .van-index-bar__sidebar {
+        position: fixed;
+        right: 5px !important;
+    }
+
+    .van-index-anchor {
+        font-size: 6vw;
+        color: $z_c;
+    }
+
+    .van-index-bar__index {
+        padding: 0;
+        width: 20px !important;
+        height: 20px !important;
+        text-align: center !important;
+        line-height: 20px !important;
+        border-radius: 50%;
+        overflow: hidden;
+        color: rgb(171, 175, 182) !important;
+    }
+
+    .van-index-bar__index--active {
+        color: #fff !important;
+        display: inline-block !important;
+        background-color: $z_c !important;
+    }
+
+    .van-cell {
+        background-color: $bg_c;
+    }
 }

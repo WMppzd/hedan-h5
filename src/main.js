@@ -30,8 +30,6 @@ Vue.use(Toast)
     .use(Dialog)
     .use(Picker);
 
-Vue.prototype.Stoast = Stoast;
-
 if (process.env.VUE_APP_IS_DEBUG === 'true') {
     new VConsole();
 }
