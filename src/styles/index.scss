@@ -1,0 +1,116 @@
+@import './variables.scss';
+@import './minix';
+@import './common';
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    font-family: 'Helvetica Neue', Helvetica, STHeiTi, sans-serif;
+}
+p,
+ul,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    padding: 0;
+}
+
+input {
+    border: none;
+}
+
+// common
+.clearfix {
+    &:after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: ' ';
+        clear: both;
+        height: 0;
+    }
+}
+
+.router-fade-enter-active,
+.router-fade-leave-active {
+    transition: opacity 0.3s;
+}
+.router-fade-enter,
+.router-fade-leave-active {
+    opacity: 0;
+}
+
+.tab-wrapper {
+    // .van-dropdown-menu {
+    //     height: 10.67vw;
+    // }
+    .van-dropdown-item__content {
+        position: relative;
+        &::before {
+            position: absolute;
+            box-sizing: border-box;
+            content: ' ';
+            pointer-events: none;
+            right: 0;
+            top: 0;
+            left: 0;
+            background: #e3e3e3;
+            height: 1px;
+            width: 100%;
+            -webkit-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+            z-index: 99;
+        }
+        .van-cell:not(:last-child)::after {
+            left: 0px;
+        }
+    }
+    .van-dropdown-item__option {
+        text-align: center;
+        .van-cell__value {
+            display: none;
+        }
+    }
+}
+.home .van-hairline--top-bottom::after,
+.van-hairline-unset--top-bottom::after,
+.search-result .van-hairline--top-bottom::after,
+.van-hairline-unset--top-bottom::after {
+    border-width: 0 !important;
+}
+
+.van-circle__text {
+    font-size: 22px !important;
+    color: #fff !important;
+}
+.van-circle svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #e9cd67 !important;
+    border-radius: 50% !important;
+}
+.flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.class-type-img74{
+    width: 74px !important;
+}
+
+.class-type-img116{
+    width: 116px  !important;
+}

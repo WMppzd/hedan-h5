@@ -1,0 +1,71 @@
+.van-dialog{
+    padding-bottom: 20px!important;
+    .van-dialog__header,.van-dialog__message{
+        font-weight: 500;
+        color: #333333;
+    }
+    .van-dialog__message{
+        padding-bottom: 15px!important;
+    }
+    .van-button__text{
+        display: inline-block;
+        width: 110px;
+        line-height:33px;
+        border-radius: 37px;
+        box-sizing: border-box;
+    }
+    .van-dialog__cancel{
+        .van-button__text{
+            border: 1px solid #a0abb9;
+            color: #a0abb9;
+        }
+    }
+    .van-dialog__confirm{
+        .van-button__text{
+            background: #FE7B55;
+            color:#fff;
+        }
+    }
+    .van-hairline--top::after{
+        border-top-width:0;
+    }
+    [class*=van-hairline]::after{
+        border:none!important;
+    }
+}
+.van-sticky--fixed{
+    background: #fff;
+}
+.van-search{
+    width:100%;
+}
+// .van-tabbar{
+//     height: 100%;
+// }
+.van-popup{
+    border-top-left-radius :10px;
+    border-top-right-radius :10px;
+    height:50%;
+}
+.none-img {
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+    img {
+        margin: 318px 0 34px;
+        width: 356px;
+    }
+    p {
+        font-size: 30px;
+        color: #a0abb9;
+    }
+}
+.line{
+    width: 100%;
+    height: 1px;
+    border: 1px solid #eeeeee;
+}
+.van-icon-cross::before {
+    font-size: 20px !important;
+    color: #333333;
+}

@@ -1,0 +1,171 @@
+// 清除浮动
+@mixin clearfix() {
+    &::after {
+        display: table;
+        clear: both;
+        content: '';
+    }
+}
+
+// 文本不换行
+@mixin no-wrap() {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+// 文本格式化，超出范围，显示省略号
+@mixin ellipsis($lines: 2) {
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
+}
+
+// 透明度
+@mixin opacity($opacity) {
+    opacity: $opacity;
+    $opacity-ie: $opacity * 100;
+    filter: alpha(opacity=$opacity-ie); //IE8
+}
+
+// 宽高
+@mixin wh($width, $height) {
+    width: $width;
+    height: $height;
+}
+
+// 扩展点击区域(多用于移动端)
+@mixin extend-click($px: -10px) {
+    position: relative;
+    &:before {
+        content: '';
+        position: absolute;
+        top: $px;
+        left: $px;
+        right: $px;
+        bottom: $px;
+    }
+}
+
+// 背景图片地址和大小
+@mixin bis($url) {
+    background-image: url($url);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+// 美化占位符 placeholder 样式
+@mixin beauty-placeholder($fz, $color: #999, $fw: normal) {
+    &:-moz-placeholder {
+        font-size: $fz;
+        color: $color;
+        font-weight: $fw;
+    }
+    &:-ms-input-placeholder {
+        font-size: $fz;
+        color: $color;
+        font-weight: $fw;
+    }
+    &::-webkit-input-placeholder {
+        font-size: $fz;
+        color: $color;
+        font-weight: $fw;
+    }
+}
+
+//美化文本的选中
+@mixin beauty-select($color, $bgcolor) {
+    &::selection {
+        color: $color;
+        background-color: $bgcolor;
+    }
+}
+
+// 文本居中
+@mixin text-center($height: 100%) {
+    height: $height;
+    line-height: $height;
+    text-align: center;
+}
+
+// flex
+@mixin flex($direction: row, $justify-content: flex-start, $align-items: flex-start, $flex-wrap: nowrap) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify-content;
+    align-items: $align-items;
+    flex-wrap: $flex-wrap;
+}
+
+// 毛玻璃效果
+@mixin blur($blur: 10px) {
+    -webkit-filter: blur($blur);
+    -moz-filter: blur($blur);
+    -o-filter: blur($blur);
+    -ms-filter: blur($blur);
+    filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='${blur}');
+    filter: blur($blur);
+    *zoom: 1;
+}
+
+//定位全屏
+@mixin allcover {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+//定位上下左右居中
+@mixin center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+//定位上下居中
+@mixin ct {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+//定位左右居中
+@mixin cl {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+// 登录按钮 （圆角 字体大小、颜色 背景色）
+@mixin btn-style {
+    border-radius: 46px;
+    font-size: 34px;
+    font-weight: 500;
+    color: #fff;
+    //background: linear-gradient(90deg, rgba(73, 206, 177, 0.5) 0%, rgba(54, 202, 127, 0.5) 100%);
+    background: linear-gradient(90deg, #8056d7 0%, #674ac6 100%);
+    
+}
+// 登录按钮的激活状态
+@mixin btn-style-active {
+    background: linear-gradient(90deg, #8056d7 0%, #674ac6 100%);
+}
+
+
+@mixin dom-bg {
+    background: linear-gradient(90deg, #8056d7 0%, #674ac6 100%);
+}
+
+
+@mixin full-screen($zIndex: 999) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: $zIndex;
+}
