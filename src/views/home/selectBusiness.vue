@@ -7,7 +7,7 @@
                     <img src="../../assets/business/logo_text.png" alt="" />
                     <div>盒 DAN 你买玩具的好帮手</div>
                 </div>
-                <div class="down">下载APP</div>
+                <div class="down" @click="Jump()">下载APP</div>
             </div>
             <div class="search">
                 <div class="left" @click="$router.go(-1)">
@@ -122,6 +122,9 @@ export default {
                     return this.searchList.push(ele);
                 }
             });
+        },
+        Jump(){
+            window.location.href='http://www.hedan.art/'
         }
     },
     created() {

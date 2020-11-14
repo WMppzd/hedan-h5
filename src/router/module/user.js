@@ -14,6 +14,11 @@ export default [
         name: 'welcome',
         meta: { title: '欢迎页' },
         component: () => import('@/views/home/welcome.vue')
+    }, {
+        path: '/login',
+        name: 'login',
+        meta: { title: '登录页面' },
+        component: () => import('@/views/home/login.vue')
     },
 ];
 

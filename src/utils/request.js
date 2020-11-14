@@ -59,36 +59,7 @@ service.interceptors.response.use(
 );
 
 const URLS = {
-    //教务中心
-    class: process.env.VUE_APP_API_CLASS,
-    //用户中心
-    passport: process.env.VUE_APP_API_PASSPORT,
-    //教学中心
-    archives: process.env.VUE_APP_API_ARCHIVES,
-    // 上传图片
-    zhuge: process.env.VUE_APP_UPLOAD_PIC,
-    // 测试环境
-    test: process.env.VUE_APP_BOCTEST,
-    // 同步
-    csp: process.env.VUE_APP_CSP,
-    //首页课程
-    course: process.env.VUE_APP_COURSE,
-    //交易中心
-    finance: process.env.VUE_APP_API_FINANCE,
-    //优惠券
-    coupon: process.env.VUE_APP_API_COUPON,
-    //魔币接口获取
-    bmzhuge: process.env.VUE_APP_API_ZHUGE,
-    //分销地址url
-    distribution: process.env.VUE_APP_DISTRIBUTION_URL,
-    //分享海报
-    poster: process.env.VUE_APP_SHARE_POSTER,
-    //查询服务
-    inquiryservice:process.env.VUE_APP_INQUIRY_SERVICE_URL,
-
-    //xpage平台 王者班体验卡
-    leggo: process.env.VUE_APP_LEGOO_URl
-
+    getSign: process.env.VUE_APP_COURSE,
 };
 
 export default function(config) {
