@@ -24,13 +24,26 @@
                 </defs>
             </svg>
         </div>
+        <div class="fix_bottom">
+            <img src="../../assets/business/dan.png" alt="" />
+            <div class="word">
+                <div>大小孩 你好！</div>
+                <div>
+                    快来制作
+                    <span>TAC上海潮流玩具展</span>
+                    的专属地图吧~
+                </div>
+            </div>
+            <div class="btn" @click="$router.push('/selectBusiness')">开始制作</div>
+        </div>
     </div>
 </template>
 <style lang="scss" scoped>
 .welcome-container {
     width: 100%;
     background-color: $bg_c;
-    min-height: 100%;
+    height: 100%;
+    position: relative;
     .header {
         height: 130px;
         width: 100%;
@@ -70,11 +83,49 @@
         }
     }
     .content {
-        height: 800px;
+        width: 100%;
         padding: 0 10px;
+        position: absolute;
+        top: 23%;
         svg {
             width: 100%;
             height: auto;
+        }
+    }
+    .fix_bottom {
+        position: fixed;
+        z-index: 99;
+        width: 100%;
+        height: 400px;
+        border-radius: 40px 40px 0 0;
+        bottom: 0;
+        left: 0;
+        background-color: #fff;
+        padding: 0 40px;
+        padding-top: 80px;
+        overflow: hidden;
+        img {
+            position: absolute;
+            height: 170px;
+            right: -10px;
+            top: -20px;
+            transform: rotate(-9.66deg);
+        }
+        .word {
+            line-height: 60px;
+            margin-bottom: 40px;
+            span {
+                color: $z_c;
+            }
+        }
+        .btn {
+            background-color: $z_c;
+            width: 100%;
+            height: 80px;
+            border-radius: 12px;
+            text-align: center;
+            line-height: 80px;
+            color: #fff;
         }
     }
 }

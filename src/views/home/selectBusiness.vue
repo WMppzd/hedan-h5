@@ -10,11 +10,11 @@
                 <div class="down">下载APP</div>
             </div>
             <div class="search">
-                <div class="left">
+                <div class="left" @click="$router.go(-1)">
                     <van-icon name="arrow-left" />
                 </div>
                 <div class="right">
-                    <input type="text" @input="search" v-model="keyword" placeholder="请输入搜索关键词" />
+                    <input type="text" ref="input" @input="search" v-model="keyword" placeholder="请输入搜索关键词" />
                     <van-icon class="input_icon" @click="keyword = ''" name="close" v-if="keyword.length > 0" />
                     <van-icon class="input_icon" name="search" v-else />
                 </div>
@@ -93,7 +93,9 @@ export default {
             token: 'token'
         })
     },
-    mounted() {},
+    mounted() {
+        this.$refs.input.focus();
+    },
 
     methods: {
         // 处理选择数据
@@ -160,7 +162,7 @@ export default {
     width: 100%;
     padding: 0 10px;
     background-color: $bg_c;
-    padding-top: 320px;
+    padding-top: 345px;
     min-height: 100%;
     .fix-h {
         position: fixed;

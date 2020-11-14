@@ -1,5 +1,9 @@
 export default [
     {
+        path: '/',
+        redirect: '/welcome'
+    },
+    {
         path: '/selectBusiness',
         name: 'selectBusiness',
         meta: { title: '选择展商' },
