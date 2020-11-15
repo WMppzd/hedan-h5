@@ -21,7 +21,7 @@
                     oninput="this.value=this.value.replace(/[^0-9]/g,'');"
                     v-model="form.mobile"
                 />
-                <!-- <img class="icon-close" src="@/assets/images/login-close.png" v-show="form.mobile.length > 0" @click="form.mobile = ''" /> -->
+               
             </li>
 
             <li class="content-item">
@@ -69,14 +69,25 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import sendCodeMixin from './send-code-mixin';
+// import sendCodeMixin from './send-code-mixin';
 import { Icon } from 'vant';
 import { getSigninfo } from '@/api/info';
+import axios from 'axios';
+import md5 from 'js-md5';
 export default {
     name: 'selectBusiness-container',
-    mixins: [sendCodeMixin],
+    // mixins: [sendCodeMixin],
     data() {
         return {
+            isCanClick: true,
+            show: false,
+            form: {
+                mobile: '',
+                code: '',
+            },
+            showCountdown: false,
+            countDownTime: 60,
+            again: false
         };
     },
     components: {
@@ -92,6 +103,7 @@ export default {
     },
 
     methods: {
+        // 登录
         handleSubmit() {
             const {
                 mobile,
@@ -114,17 +126,90 @@ export default {
                 return false;
             }
 
-            getSigninfo({ mobile: mobile}).then(res => {
-                   
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-                .finally(() => {
-                    // this.isCanClick = true;
-                });
-          
+           
+            // api/passport/login/verify
 
+             axios.post('api/api/passport/login/verify', {
+                invitationCode: "",
+                isCheckSmsCode: true,
+                isUseInvite: false,
+                loginRecordForm: {
+                    deviceNumber: "",
+                    download: "",
+                    ip: "",
+                    phoneModel: "",
+                    system: ""
+                },
+                mobile: this.form.mobile,
+                smsCode: this.form.code,
+                stickerInviteCode: ""
+            }).then(function(response){
+               if(response.data.code == 'OK'){
+                    this.$toast({ message: '登录成功！', icon: 'success', duration: 1500, className: 'passport-toast' });
+               }
+            })
+
+        },
+
+        // 获取验签
+        sendCode() {
+            const {
+                mobile,
+                code ,
+                // country_code: { phone_code }
+            } = this.form;
+            if (!mobile) {
+                this.$toast({ message: '请输入账号', icon: 'warning', duration: 1500, className: 'passport-toast' });
+                return false;
+            }
+            if(mobile){
+                if (!/^1[3456789]\d{9}$/.test(mobile)) {
+                    this.$toast({ message: '手机号格式错误', icon: 'warning', duration: 1500, className: 'passport-toast' });
+                    return false;
+                }
+            }
+
+            if (!this.isCanClick) return false;
+            this.isCanClick = false;
+            let that = this
+            axios.post('api/api/sms/getSign', {
+                mobile: mobile
+            }).then(function (response) {
+                if(response.data.code == 'OK'){
+
+                     let secrets = md5(response.data.data.sign+'PQnnhKtCbYNJPbgvIbSs@NJBZqA0u9MJ')
+                     that.sendCodelogin(secrets)
+
+                }
+               
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        // 获取验证码
+        sendCodelogin(secrets){
+            let that = this
+            axios.post('api/api/sms/sendCode/login', {
+                mobile: this.form.mobile,
+                secret:secrets
+            }).then(function(response){
+                if(response.data.code == 'OK'){
+                    that.handleCount()
+                }
+            })
+        },
+        // 倒计时
+        handleCount() {
+            this.showCountdown = true;
+            let old_timer = setInterval(() => {
+                this.countDownTime -= 1;
+                if (this.countDownTime === 0) {
+                    clearInterval(old_timer);
+                    this.countDownTime = 60;
+                    this.again = true;
+                    this.showCountdown = false;
+                }
+            }, 1000);
         },
 
         Jump(){
