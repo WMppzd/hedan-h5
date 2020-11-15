@@ -58,7 +58,7 @@
                         <van-icon class="clear" @click="clear(selectList, ele)" name="clear" />
                     </div>
                 </div>
-                <div class="btn">生成专属地图</div>
+                <div class="btn" @click="goPic">生成专属地图</div>
             </div>
         </van-action-sheet>
     </div>
@@ -90,7 +90,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            userInfo:'userInfo'
+            userInfo: 'userInfo'
         })
     },
     mounted() {
@@ -98,6 +98,18 @@ export default {
     },
 
     methods: {
+        goPic() {
+            let list = this.selectList.map((ele) => {
+                return ele.id;
+            });
+            console.log(list);
+            this.$router.push({
+                path: '/test',
+                query: {
+                    list
+                }
+            });
+        },
         // 处理选择数据
         handleList(data) {
             if (this.selectList.includes(data)) {
@@ -123,8 +135,8 @@ export default {
                 }
             });
         },
-        Jump(){
-            window.location.href='http://www.hedan.art/'
+        Jump() {
+            window.location.href = 'http://www.hedan.art/';
         }
     },
     created() {
