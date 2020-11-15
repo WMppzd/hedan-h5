@@ -18,7 +18,7 @@ const modules = (modulesFiles => {
 const debug = process.env.NODE_ENV !== 'production';
 
 const createPersisted = createPersistedState({
-    key: 'doushen',
+    key: 'hedan',
     // storage: {
     //     getItem: key => Cookies.get(key),
     //     setItem: (key, value) => Cookies.set(key, value, { expires: 30 }),

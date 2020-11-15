@@ -90,7 +90,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            token: 'token'
+            userInfo:'userInfo'
         })
     },
     mounted() {
