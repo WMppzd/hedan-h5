@@ -1,70 +1,54 @@
 <template>
-<div class="login-bg">
+    <div class="login-bg">
+        <div class="login-back pad1">
+            <van-icon name="arrow-left" />
+        </div>
 
-    <div class="login-back pad1">
-        <van-icon name="arrow-left" />
-    </div>
+        <div class="login-he pad1">登录 / 注册盒DAN</div>
 
-    <div class="login-he pad1">
-        登录 / 注册盒DAN
-    </div>
+        <div class="pad1">
+            <ul class="content-wrap">
+                <li class="content-item">
+                    <input class="account" type="text" pattern="\d*" placeholder="请输入手机号" :maxlength="11" oninput="this.value=this.value.replace(/[^0-9]/g,'');" v-model="form.mobile" />
+                </li>
 
-    <div class="pad1">
-        <ul class="content-wrap">
-            <li class="content-item">
-                <input
-                    class="account"
-                    type="text"
-                    pattern="\d*"
-                    placeholder="请输入手机号"
-                    :maxlength="11"
-                    oninput="this.value=this.value.replace(/[^0-9]/g,'');"
-                    v-model="form.mobile"
-                />
-               
-            </li>
+                <li class="content-item">
+                    <input
+                        class="password"
+                        type="text"
+                        pattern="\d*"
+                        ref="inputVal"
+                        maxlength="6"
+                        oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+                        placeholder="请输入验证码"
+                        v-model="form.code"
+                    />
+                    <div class="get-code-box">
+                        <span v-show="!showCountdown" @click="sendCode" class="get-code-btn">
+                            <template v-if="again">重新获取</template>
+                            <span v-else class="login-yan">获取验证码</span>
+                        </span>
+                        <span v-show="showCountdown" class="get-code-btn">{{ countDownTime }}s后重发</span>
+                    </div>
+                </li>
+            </ul>
 
-            <li class="content-item">
-                <input
-                    class="password"
-                    type="text"
-                    pattern="\d*"
-                    ref="inputVal"
-                    maxlength="6"
-                    oninput="this.value=this.value.replace(/[^0-9]/g,'');"
-                    placeholder="请输入验证码"
-                    v-model="form.code"
-                />
-                <div class="get-code-box">
-                    <span v-show="!showCountdown" @click="sendCode" class="get-code-btn">
-                        <template v-if="again">重新获取</template>
-                        <span v-else class="login-yan">获取验证码</span>
-                    </span>
-                    <span v-show="showCountdown" class="get-code-btn">{{ countDownTime }}s后重发</span>
+            <div class="sign-in-btn" @click="handleSubmit">立即登录</div>
+        </div>
+
+        <div class="login-container">
+            <div class="fix-h">
+                <div class="header">
+                    <img class="logo" src="../../assets/business/logo.png" alt="" />
+                    <div class="info">
+                        <img src="../../assets/business/logo_text.png" alt="" />
+                        <div>盒 DAN 你买玩具的好帮手</div>
+                    </div>
+                    <div class="down" @click="Jump()">下载APP</div>
                 </div>
-            </li>
-    
-        </ul>
-
-         <div class="sign-in-btn" @click="handleSubmit">立即登录</div>
-    </div>
-
-     <div class="login-container">
-        <div class="fix-h">
-            <div class="header">
-                <img class="logo" src="../../assets/business/logo.png" alt="" />
-                <div class="info">
-                    <img src="../../assets/business/logo_text.png" alt="" />
-                    <div>盒 DAN 你买玩具的好帮手</div>
-                </div>
-                <div class="down" @click="Jump()">下载APP</div>
             </div>
         </div>
     </div>
-
-    
-</div>
-   
 </template>
 
 <script>
@@ -81,7 +65,7 @@ export default {
             show: false,
             form: {
                 mobile: '',
-                code: '',
+                code: ''
             },
             showCountdown: false,
             countDownTime: 60,
@@ -89,31 +73,30 @@ export default {
         };
     },
     components: {
-        [Icon.name]: Icon,
+        [Icon.name]: Icon
     },
     computed: {
         ...mapGetters({
-            userInfo:'userInfo'
+            userInfo: 'userInfo',
+            token: 'token'
         })
     },
-    mounted() {
-
-    },
+    mounted() {},
 
     methods: {
         // 登录
         handleSubmit() {
             const {
                 mobile,
-                code,
+                code
                 // country_code: { phone_code }
             } = this.form;
             if (!mobile) {
                 this.$toast({ message: '请输入账号', icon: 'warning', duration: 1500, className: 'passport-toast' });
                 return false;
             }
-           
-            if(mobile){
+
+            if (mobile) {
                 if (!/^1[3456789]\d{9}$/.test(mobile)) {
                     this.$toast({ message: '手机号格式错误', icon: 'warning', duration: 1500, className: 'passport-toast' });
                     return false;
@@ -123,43 +106,50 @@ export default {
                 this.$toast({ message: '请输入验证码', icon: 'warning', duration: 1500, className: 'passport-toast' });
                 return false;
             }
-            let that = this
-             axios.post('api/api/passport/login/verify', {
-                invitationCode: "",
-                isCheckSmsCode: true,
-                isUseInvite: false,
-                loginRecordForm: {
-                    deviceNumber: "",
-                    download: "",
-                    ip: "",
-                    phoneModel: "",
-                    system: ""
-                },
-                mobile: that.form.mobile,
-                smsCode: that.form.code,
-                stickerInviteCode: ""
-            }).then(function(response){
-               if(response.data.code == 'OK'){
-                    that.$toast({ message: '登录成功！', icon: 'success', duration: 1500, className: 'passport-toast' });
-                    // console.log(response.data.data)
-                    that.$store.commit('SET_USERINFO',response.data.data)
-               }
-            })
-
+            let that = this;
+            axios
+                .post('api/api/passport/login/verify', {
+                    invitationCode: '',
+                    isCheckSmsCode: true,
+                    isUseInvite: false,
+                    loginRecordForm: {
+                        deviceNumber: '',
+                        download: '',
+                        ip: '',
+                        phoneModel: '',
+                        system: ''
+                    },
+                    mobile: that.form.mobile,
+                    smsCode: that.form.code,
+                    stickerInviteCode: ''
+                })
+                .then(function (response) {
+                    if (response.data.code == 'OK') {
+                        that.$toast({ message: '登录成功！', icon: 'success', duration: 1500, className: 'passport-toast' });
+                        // console.log(response.data.data)
+                        that.$store.commit('SET_USERINFO', response.data.data);
+                        that.$store.commit('SET_TOKEN', response.data.data.token);
+                        if (that.$route.query.from) {
+                            that.$router.push(`/${that.$route.query.from}`);
+                        } else {
+                            that.$router.push('/');
+                        }
+                    }
+                });
         },
 
         // 获取验签
         sendCode() {
             const {
                 mobile,
-                code ,
+                code
                 // country_code: { phone_code }
             } = this.form;
             if (!mobile) {
                 this.$toast({ message: '请输入账号', icon: 'warning', duration: 1500, className: 'passport-toast' });
                 return false;
             }
-            if(mobile){
+            if (mobile) {
                 if (!/^1[3456789]\d{9}$/.test(mobile)) {
                     this.$toast({ message: '手机号格式错误', icon: 'warning', duration: 1500, className: 'passport-toast' });
                     return false;
@@ -168,32 +158,34 @@ export default {
 
             if (!this.isCanClick) return false;
             this.isCanClick = false;
-            let that = this
-            axios.post('api/api/sms/getSign', {
-                mobile: mobile
-            }).then(function (response) {
-                if(response.data.code == 'OK'){
-
-                     let secrets = md5(response.data.data.sign+'PQnnhKtCbYNJPbgvIbSs@NJBZqA0u9MJ')
-                     that.sendCodelogin(secrets)
-
-                }
-               
-            }).catch(function (error) {
-                console.log(error);
-            });
+            let that = this;
+            axios
+                .post('api/api/sms/getSign', {
+                    mobile: mobile
+                })
+                .then(function (response) {
+                    if (response.data.code == 'OK') {
+                        let secrets = md5(response.data.data.sign + 'PQnnhKtCbYNJPbgvIbSs@NJBZqA0u9MJ');
+                        that.sendCodelogin(secrets);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
         // 获取验证码
-        sendCodelogin(secrets){
-            let that = this
-            axios.post('api/api/sms/sendCode/login', {
-                mobile: this.form.mobile,
-                secret:secrets
-            }).then(function(response){
-                if(response.data.code == 'OK'){
-                    that.handleCount()
-                }
-            })
+        sendCodelogin(secrets) {
+            let that = this;
+            axios
+                .post('api/api/sms/sendCode/login', {
+                    mobile: this.form.mobile,
+                    secret: secrets
+                })
+                .then(function (response) {
+                    if (response.data.code == 'OK') {
+                        that.handleCount();
+                    }
+                });
         },
         // 倒计时
         handleCount() {
@@ -209,18 +201,20 @@ export default {
             }, 1000);
         },
 
-        Jump(){
-            window.location.href='http://www.hedan.art/'
+        Jump() {
+            window.location.href = 'http://www.hedan.art/';
         }
     },
     created() {
-        console.log(this.userInfo.token)
+        if (this.token) {
+            this.$router.push('/');
+        }
     }
 };
 </script>
 
 <style lang="scss" scoped>
-.login-bg{
+.login-bg {
     position: relative;
     top: 0;
     left: 0;
@@ -231,13 +225,13 @@ export default {
     height: 100%;
     background: #5353da;
 
-    .login-back{
+    .login-back {
         line-height: 50px;
         font-size: 40px;
         color: #fff;
     }
 
-    .login-he{
+    .login-he {
         color: #fff;
         font-size: 45px;
         margin-top: 200px;
@@ -293,7 +287,6 @@ export default {
                 color: #fff;
             }
         }
-    
     }
 
     .content-wrap {
@@ -345,7 +338,7 @@ export default {
                 line-height: 96px;
                 height: 100%;
                 margin-right: 40px;
-                .login-yan{
+                .login-yan {
                     color: #ead893;
                 }
             }
@@ -353,19 +346,18 @@ export default {
     }
 
     .sign-in-btn {
-            margin: 0px 0 20px;
-            width: 100%;
-            background: #eaedf0;
-            color: #9a9494;
-            text-align: center;
-            margin: 0 auto;
-            line-height: 90px;
-            border-radius: 15px;
+        margin: 0px 0 20px;
+        width: 100%;
+        background: #eaedf0;
+        color: #9a9494;
+        text-align: center;
+        margin: 0 auto;
+        line-height: 90px;
+        border-radius: 15px;
     }
 
-  .pad1{
-      padding: 25px 50px;
-  }
+    .pad1 {
+        padding: 25px 50px;
+    }
 }
-
 </style>
