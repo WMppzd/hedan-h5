@@ -69,14 +69,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
-// import sendCodeMixin from './send-code-mixin';
 import { Icon } from 'vant';
 import { getSigninfo } from '@/api/info';
 import axios from 'axios';
 import md5 from 'js-md5';
 export default {
     name: 'selectBusiness-container',
-    // mixins: [sendCodeMixin],
     data() {
         return {
             isCanClick: true,
@@ -95,7 +93,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            token: 'token'
+            userInfo:'userInfo'
         })
     },
     mounted() {
@@ -125,10 +123,7 @@ export default {
                 this.$toast({ message: '请输入验证码', icon: 'warning', duration: 1500, className: 'passport-toast' });
                 return false;
             }
-
-           
-            // api/passport/login/verify
-
+            let that = this
              axios.post('api/api/passport/login/verify', {
                 invitationCode: "",
                 isCheckSmsCode: true,
@@ -140,12 +135,14 @@ export default {
                     phoneModel: "",
                     system: ""
                 },
-                mobile: this.form.mobile,
-                smsCode: this.form.code,
+                mobile: that.form.mobile,
+                smsCode: that.form.code,
                 stickerInviteCode: ""
             }).then(function(response){
                if(response.data.code == 'OK'){
-                    this.$toast({ message: '登录成功！', icon: 'success', duration: 1500, className: 'passport-toast' });
+                    that.$toast({ message: '登录成功！', icon: 'success', duration: 1500, className: 'passport-toast' });
+                    // console.log(response.data.data)
+                    that.$store.commit('SET_USERINFO',response.data.data)
                }
             })
 
@@ -217,7 +214,7 @@ export default {
         }
     },
     created() {
-
+        console.log(this.userInfo.token)
     }
 };
 </script>

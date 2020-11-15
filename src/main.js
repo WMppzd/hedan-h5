@@ -8,7 +8,7 @@ import './styles/iconfont/iconfont.css';
 // 导入toast css
 import VueJsonp from 'vue-jsonp';
 import VConsole from 'vconsole';
-
+// import createjs from 'createjs-npm/lib/easel';
 Vue.use(Toast)
     .use(Lazyload)
     .use(Popup)

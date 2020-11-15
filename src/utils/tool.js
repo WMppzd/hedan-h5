@@ -108,18 +108,7 @@ export function createRandomNum(n) {
     return parseInt(rnd, 10);
 }
 
-/**
- * @description 生成uuid
- */
-export function createUuid() {
-    let d = new Date().getTime();
-    let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        let r = (d + Math.random() * 16) % 16 | 0;
-        d = Math.floor(d / 16);
-        return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
-    });
-    return uuid;
-}
+
 
 /**
  * @description 判断运行环境
@@ -151,55 +140,5 @@ export function getCookie(name) {
     }
 }
 
-/**
- * @description 获取appid
- */
-export function getAppid() {
-    const appIds = process.env.VUE_APP_WECHAT_APPID;
-    let ids = appIds.split(',');
-    let name = location.host.includes('doushen') ? 'doushen' : 'zhugexuetang';
-    let value = '';
-    for (const item of ids) {
-        if (item.includes(name)) {
-            value = item.split(':')[1];
-        }
-    }
-    return value;
-}
-// 国内时间转换为加拿大温哥华时间
-export function changeOverTime(i, par, par2) {
-    if (typeof i !== 'number') return;
-    // 获取时区
-    // let timeZone = new Date().getTimezoneOffset() / 60 * -1;
-    par = par.replace(/-/g, '/');
-    let d = par + ' ' + par2;
-    let offset = i - 8;
-    let timeStr = new Date(new Date(d).getTime() + offset * 3600000);
-    let y = timeStr.getFullYear();
-    let m = timeStr.getMonth() + 1 < 10 ? '0' + (timeStr.getMonth() + 1) : timeStr.getMonth() + 1;
-    let day = timeStr.getDate() < 10 ? '0' + timeStr.getDate() : timeStr.getDate();
-    let h = timeStr.getHours() < 10 ? '0' + timeStr.getHours() : timeStr.getHours();
-    let mm = timeStr.getMinutes() < 10 ? '0' + timeStr.getMinutes() : timeStr.getMinutes();
-    let times = y + '-' + m + '-' + day + ' ' + h + ':' + mm;
-    return times;
-}
 
-// 判断周日到周一是否需要减一
-export function changeWeekDay(time1, time2, week) {
-    let obj = {};
-    if (time1 < time2) {
-        let weekdayLs = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-        if (weekdayLs.indexOf(week) > -1) {
-            obj.isChange = 1;
-            let idx = weekdayLs.indexOf(week);
-            if (idx == 0) {
-                obj.newWeekday = weekdayLs[weekdayLs.length - 1];
-            } else {
-                obj.newWeekday = weekdayLs[idx - 1];
-            }
-        }
-    } else {
-        obj.isChange = 2;
-    }
-    return obj;
-}
+
