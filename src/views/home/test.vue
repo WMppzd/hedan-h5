@@ -9,15 +9,15 @@ import zuobiao from '../../utils/zuobiao';
 export default {
     data() {
         return {
-            selectList: []
+            selectList: ['A1']
         };
     },
     created() {
         // this.selectList = this.$route.query.list;
-        for (const key in zuobiao) {
-            this.selectList.push(key);
-        }
-        console.log(this.selectList);
+        // for (const key in zuobiao) {
+        //     this.selectList.push(key);
+        // }
+        // console.log(this.selectList);
     },
     mounted() {
         var _this = this;
@@ -45,7 +45,7 @@ export default {
                             console.log(ele, key);
                             let theBitmap1 = new createjs.Bitmap(image1);
                             console.log(zuobiao[key].x, zuobiao[key].y);
-                            theBitmap1.set({ x: zuobiao[key].x - 20, y: zuobiao[key].y - 30 });
+                            theBitmap1.set({ x: zuobiao[key].x - 20, y: zuobiao[key].y - 48 });
                             stage.addChild(theBitmap1);
                         }
                     }
