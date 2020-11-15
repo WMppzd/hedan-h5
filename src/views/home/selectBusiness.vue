@@ -130,7 +130,8 @@ export default {
             if (this.keyword.length == 0) return;
             this.searchList = [];
             businessList.forEach((ele) => {
-                if (ele.keyword.includes(this.keyword)) {
+                let searchWord = ele.name + ele.keyword;
+                if (searchWord.includes(this.keyword)) {
                     return this.searchList.push(ele);
                 }
             });
