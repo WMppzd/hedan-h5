@@ -14,7 +14,7 @@
                     <van-icon name="arrow-left" />
                 </div>
                 <div class="right">
-                    <input type="text" ref="input" @input="search" v-model="keyword" placeholder="请输入搜索关键词" />
+                    <input type="text" ref="input" @input="search" v-model="keyword" placeholder="请输入搜索品牌" />
                     <van-icon class="input_icon" @click="keyword = ''" name="close" v-if="keyword.length > 0" />
                     <van-icon class="input_icon" name="search" v-else />
                 </div>
@@ -58,16 +58,48 @@
                         <van-icon class="clear" @click="clear(selectList, ele)" name="clear" />
                     </div>
                 </div>
+                <div class="btn btnBack" @click="goBack">返回</div>
                 <div class="btn" @click="goPic">生成专属地图</div>
             </div>
         </van-action-sheet>
+
+    <div class="mapLoading">
+         <van-popup v-model="showMap" round >
+          <div class="showMap">
+              <div class="pad mt20">DAN酱正在制作专属地图</div>
+              <div class="pad">请稍等...</div>
+              <div class="pad">
+                  <img src="../../assets/business/mapLoading.png" alt="">
+              </div>
+          </div>
+      </van-popup>
+    </div>
+
+    <div class="mapSc">
+        <van-popup v-model="scMap" round closeable>
+                <div class="scMap">
+                  <div class="mt80"> 你的<span class="scMapspan">TAC上海潮流玩具展</span> </div>
+                  <div>专属地图制作完成啦～</div>
+                  <div class="canMap">
+                      <img src="../../assets/business/bg.png" alt="" v-show="this.userInfo && this.userInfo.token?false:true">
+                      <canvas id="imageView" v-show="this.userInfo && this.userInfo.token?true:false"></canvas>
+                  </div>
+                   <div class="btn" @click="goPic" v-if="this.userInfo && this.userInfo.token?false:true">生成专属地图</div>
+                  <div class="tishi" v-if="this.userInfo && this.userInfo.token?true:false">提示：长按图片保存到手机</div>
+                </div>
+        </van-popup>
+    </div>
+     
+
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import businessList from '../../utils/businessData';
-import { IndexBar, IndexAnchor, Checkbox, CheckboxGroup, ActionSheet, Search } from 'vant';
+import { IndexBar, IndexAnchor, Checkbox, CheckboxGroup, ActionSheet, Search , Popup} from 'vant';
+import 'script-loader!createjs/builds/1.0.0/createjs.min.js';
+import zuobiao from '../../utils/zuobiao';
 export default {
     name: 'selectBusiness-container',
     data() {
@@ -76,8 +108,12 @@ export default {
             data: {},
             selectList: [],
             sheetshow: false,
+            showMap:false,
+            scMap:false,
+            showts:false,
             keyword: '',
-            searchList: []
+            searchList: [],
+            selectListMap:[]
         };
     },
     components: {
@@ -86,7 +122,8 @@ export default {
         [Checkbox.name]: Checkbox,
         [CheckboxGroup.name]: CheckboxGroup,
         [ActionSheet.name]: ActionSheet,
-        [Search.name]: Search
+        [Search.name]: Search,
+        [Popup.name]: Popup
     },
     computed: {
         ...mapGetters({
@@ -95,21 +132,84 @@ export default {
     },
     mounted() {
         this.$refs.input.focus();
+          
     },
 
     methods: {
-        goPic() {
-            let list = this.selectList.map((ele) => {
-                return ele.id;
-            });
-            console.log(list);
-            this.$router.push({
-                path: '/test',
-                query: {
-                    list
-                }
-            });
+        // 返回
+        goBack(){
+            this.sheetshow = false;
         },
+
+        goPic() {
+            this.sheetshow = false;
+            this.showMap = true
+            let that = this
+            setTimeout(function(){
+                 that.showMap = false
+                 that.scMap = true
+                 console.log(that.selectList)
+                 that.selectListMap = that.selectList.map((ele) => {
+                    return ele.id;
+                });
+                that.handlerImageLoad()
+            },1000)
+            // let list = this.selectList.map((ele) => {
+            //     return ele.id;
+            // });
+            // console.log(list);
+            // this.$router.push({
+            //     path: '/test',
+            //     query: {
+            //         list
+            //     }
+            // });
+        },
+
+        handlerImageLoad(){
+          this.$nextTick(()=>{
+
+        // 通过画布ID 创建一个 Stage 实例
+       
+            // 创建一个 Bitmap 实例
+            var _this = this;
+            var stage = new createjs.Stage('imageView');
+            var image = new Image();
+            image.src = require('../../assets/business/bg.svg');
+            image.onload = handlerImageLoad;
+            function handlerImageLoad(event) {
+            var theBitmap = new createjs.Bitmap(image);
+            // 设置画布大小等于图片实际大小
+            console.log(theBitmap);
+            console.log(stage)
+            stage.canvas.width = theBitmap.image.naturalWidth;
+            stage.canvas.height = theBitmap.image.naturalHeight;
+            theBitmap.set({ x: 0, y: 0, scaleX: 1, scaleY: 1 });
+            // 把Bitmap 实例添加到 stage 的显示列表中
+            stage.addChild(theBitmap);
+            var image1 = new Image();
+            image1.src = require('../../assets/business/zb.svg');
+            image1.onload = () => {
+                _this.selectListMap.forEach((ele) => {
+                    for (const key in zuobiao) {
+                        if (key.includes(ele)) {
+                            console.log(ele, key);
+                            let theBitmap1 = new createjs.Bitmap(image1);
+                            theBitmap1.set({ x: zuobiao[key].x - 20, y: zuobiao[key].y - 48 });
+                            stage.addChild(theBitmap1);
+                            return;
+                        }
+                    }
+                });
+                stage.update();
+            };
+            console.log(stage);
+            // 更新 stage 渲染画面
+        }
+          })
+
+        },
+
         // 处理选择数据
         handleList(data) {
             if (this.selectList.includes(data)) {
@@ -168,7 +268,8 @@ export default {
             }
         });
         this.data = data;
-        console.log(data);
+        // console.log(this.userInfo.token);
+       
     }
 };
 </script>
@@ -335,6 +436,7 @@ export default {
         line-height: 80px;
         color: #fff;
     }
+    
     .sheetcontent {
         padding: 40px;
         height: 100%;
@@ -348,11 +450,58 @@ export default {
             }
         }
         .btn {
-            width: calc(100% - 80px);
+            width: calc(50% - 80px);
+            position: absolute;
+            bottom: 70px;
+            right: 40px;
+        }
+         .btnBack {
+            width: calc(50% - 80px);
             position: absolute;
             bottom: 70px;
             left: 40px;
+            border: 1px solid #1d1212;
+            background:#fff;
+            color:#1d1212;
         }
     }
+
+    .showMap{
+        text-align: center;
+        font-size: 35px;
+        width: 500px!important;
+        .pad{
+             padding: 10px 20px;
+        }
+        img{
+            width: 90%;
+        }
+       
+    }
+
+    .scMap{
+         text-align: center;
+         font-size: 30px;
+         width: 550px!important;
+         .scMapspan{
+             color: #6361ed;
+             margin-bottom: 20px;
+         }
+         .canMap{
+             margin: 20px;
+         }
+         .tishi{
+             color: red;
+         }
+         img{
+             width: 80%;
+         }
+    }
+
+    
+        canvas {
+            width: 100%;
+        }
+
 }
 </style>
