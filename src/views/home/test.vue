@@ -9,7 +9,7 @@ import zuobiao from '../../utils/zuobiao';
 export default {
     data() {
         return {
-            selectList: ['A1']
+            selectList: ['A1','M1']
         };
     },
     created() {
@@ -44,8 +44,8 @@ export default {
                         if (key.includes(ele)) {
                             console.log(ele, key);
                             let theBitmap1 = new createjs.Bitmap(image1);
-                            console.log(zuobiao[key].x, zuobiao[key].y);
-                            theBitmap1.set({ x: zuobiao[key].x - 20, y: zuobiao[key].y - 48 });
+                            console.log(zuobiao[ele].x, zuobiao[ele].y);
+                            theBitmap1.set({ x: zuobiao[ele].x - 20, y: zuobiao[ele].y - 48 });
                             stage.addChild(theBitmap1);
                         }
                     }
