@@ -190,7 +190,7 @@ export default {
                 function handlerImageLoad(event) {
                     var theBitmap = new createjs.Bitmap(image);
                     // 设置画布大小等于图片实际大小
-                    
+
                     stage.canvas.width = theBitmap.image.naturalWidth;
                     stage.canvas.height = theBitmap.image.naturalHeight;
                     theBitmap.set({ x: 0, y: 0, scaleX: 1, scaleY: 1 });
@@ -203,7 +203,7 @@ export default {
                             for (const key in zuobiao) {
                                 if (key.includes(ele)) {
                                     let theBitmap1 = new createjs.Bitmap(image1);
-                                    theBitmap1.set({ x: zuobiao[key].x - 20, y: zuobiao[key].y - 48 });
+                                    theBitmap1.set({ x: zuobiao[key].x - 20, y: zuobiao[key].y - 48, scaleX: 0.1, scaleY: 0.1 });
                                     stage.addChild(theBitmap1);
                                     return;
                                 }

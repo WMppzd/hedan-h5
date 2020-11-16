@@ -161,18 +161,22 @@ input {
         background-color: $bg_c;
     }
 
-    .mapLoading .van-popup{
-        // height: 43%;
+    .mapLoading .van-popup {
+        height: auto;
+        // height: 42vh;
         padding: 0 10px;
         // line-height: 248%;
     }
-    .mt20{
+
+    .mt20 {
         margin-top: 20px;
     }
-    .mt80{
+
+    .mt80 {
         margin-top: 80px;
     }
-    .mapSc .van-popup{
+
+    .mapSc .van-popup {
         height: 45%;
     }
 }
