@@ -185,7 +185,7 @@ export default {
                 var _this = this;
                 var stage = new createjs.Stage('imageView');
                 var image = new Image();
-                image.src = require('../../assets/business/bg.svg');
+                image.src = require('../../assets/business/bg.jpg');
                 image.onload = handlerImageLoad;
                 function handlerImageLoad(event) {
                     var theBitmap = new createjs.Bitmap(image);
@@ -203,7 +203,7 @@ export default {
                             for (const key in zuobiao) {
                                 if (key.includes(ele)) {
                                     let theBitmap1 = new createjs.Bitmap(image1);
-                                    theBitmap1.set({ x: zuobiao[key].x - 20, y: zuobiao[key].y - 48, scaleX: 0.1, scaleY: 0.1 });
+                                    theBitmap1.set({ x: zuobiao[key].x - 16, y: zuobiao[key].y - 48, scaleX: 0.09, scaleY: 0.09 });
                                     stage.addChild(theBitmap1);
                                     return;
                                 }
