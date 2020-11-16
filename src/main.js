@@ -34,11 +34,6 @@ if (process.env.VUE_APP_IS_DEBUG === 'true') {
     new VConsole();
 }
 
-// Vue.filter('changeDateFormat', function(timestr) {
-//     if (timestr && timestr.indexOf('-' != -1)) {
-//         return timestr.replace(/-/g, '.');
-//     }
-// });
 
 Vue.config.productionTip = false;
 

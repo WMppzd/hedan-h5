@@ -3,6 +3,7 @@ const user = {
         token: '',
         list: '',
         userinfo: null, //用户信息
+        base64:""
     },
     mutations: {
         SET_TOKEN: (state, token) => {
@@ -14,6 +15,9 @@ const user = {
         },
         SET_LIST(state, data) {
             state.list = data
+        },
+        SET_BASE(state, data) {
+            state.base64 = data
         },
     },
     getters: {

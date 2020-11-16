@@ -14,14 +14,6 @@ export default {
             keepAlive: []
         };
     },
-    methods: {},
-    created() {},
-    mounted() {
-        // const token = !!this.$store.getters.token;
-        // if(token) {
-        //     this.$store.dispatch('getUserInfo');
-        // }
-    }
 };
 </script>
 

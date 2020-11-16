@@ -1,5 +1,5 @@
 {
-  "name": "studentService",
+  "name": "hehan",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -31,7 +31,8 @@
     "vue-page-stack": "^1.3.2",
     "vue-router": "^3.3.1",
     "vuex": "^3.0.1",
-    "vuex-persistedstate": "^2.5.4"
+    "vuex-persistedstate": "^2.5.4",
+    "weixin-js-sdk": "^1.6.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",

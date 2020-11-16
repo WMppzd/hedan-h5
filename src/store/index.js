@@ -19,15 +19,9 @@ const debug = process.env.NODE_ENV !== 'production';
 
 const createPersisted = createPersistedState({
     key: 'hedan',
-    // storage: {
-    //     getItem: key => Cookies.get(key),
-    //     setItem: (key, value) => Cookies.set(key, value, { expires: 30 }),
-    //     removeItem: key => Cookies.remove(key)
-    // },
     reducer(val) {
         return {
             user: val.user
-            // filter: val.filter
         };
     }
 });

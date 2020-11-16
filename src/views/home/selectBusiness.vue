@@ -64,7 +64,7 @@
         </van-action-sheet>
 
         <div class="mapLoading">
-            <van-popup v-model="showMap" round>
+            <van-popup v-model="showMap" round safe-area-inset-bottom>
                 <div class="showMap">
                     <div class="pad mt20">DAN酱正在制作专属地图</div>
                     <div class="pad">请稍等...</div>
@@ -144,6 +144,7 @@ export default {
             var image = new Image();
             image.src = this.$refs.imageView.toDataURL('image/png');
             this.canvasPng = image.src;
+            this.$store.commit('SET_BASE', image.src);
             return image.src;
         },
         savePic() {
@@ -169,29 +170,17 @@ export default {
             setTimeout(function () {
                 that.showMap = false;
                 that.scMap = true;
-                console.log(that.selectList);
                 that.selectListMap = that.selectList.map((ele) => {
                     return ele.id;
                 });
                 that.handlerImageLoad();
-                that.$store.commit('SET_LIST', '');
+                // that.$store.commit('SET_LIST', '');
             }, 1000);
-            // let list = this.selectList.map((ele) => {
-            //     return ele.id;
-            // });
-            // console.log(list);
-            // this.$router.push({
-            //     path: '/test',
-            //     query: {
-            //         list
-            //     }
-            // });
         },
 
         handlerImageLoad() {
             this.$nextTick(() => {
                 // 通过画布ID 创建一个 Stage 实例
-
                 // 创建一个 Bitmap 实例
                 var _this = this;
                 var stage = new createjs.Stage('imageView');
@@ -201,20 +190,18 @@ export default {
                 function handlerImageLoad(event) {
                     var theBitmap = new createjs.Bitmap(image);
                     // 设置画布大小等于图片实际大小
-                    console.log(theBitmap);
-                    console.log(stage);
+                    
                     stage.canvas.width = theBitmap.image.naturalWidth;
                     stage.canvas.height = theBitmap.image.naturalHeight;
                     theBitmap.set({ x: 0, y: 0, scaleX: 1, scaleY: 1 });
                     // 把Bitmap 实例添加到 stage 的显示列表中
                     stage.addChild(theBitmap);
                     var image1 = new Image();
-                    image1.src = require('../../assets/business/zb.svg');
+                    image1.src = require('../../assets/business/zb.png');
                     image1.onload = () => {
                         _this.selectListMap.forEach((ele) => {
                             for (const key in zuobiao) {
                                 if (key.includes(ele)) {
-                                    console.log(ele, key);
                                     let theBitmap1 = new createjs.Bitmap(image1);
                                     theBitmap1.set({ x: zuobiao[key].x - 20, y: zuobiao[key].y - 48 });
                                     stage.addChild(theBitmap1);
@@ -225,7 +212,6 @@ export default {
                         stage.update();
                         _this.convertCanvasToImage();
                     };
-                    console.log(stage);
                     // 更新 stage 渲染画面
                 }
             });
@@ -296,9 +282,8 @@ export default {
                 return ele.id;
             });
             this.handlerImageLoad();
-            this.$store.commit('SET_LIST', '');
+            // this.$store.commit('SET_LIST', '');
         }
-        // console.log(this.userInfo.token);
     }
 };
 </script>
@@ -503,7 +488,8 @@ export default {
             padding: 10px 20px;
         }
         img {
-            width: 90%;
+            width: 80%;
+            // margin-bottom: 20px;
         }
     }
 
