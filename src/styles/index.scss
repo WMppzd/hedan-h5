@@ -162,6 +162,13 @@ input {
         // padding-top: 345px;
     }
 
+    .van-index-anchor--sticky{
+        background-color: #f5f6f5;
+        margin-top: -6px;
+        transform:'';
+        position: absolute;
+    }
+
     .van-cell {
         background-color: $bg_c;
     }
@@ -181,6 +188,43 @@ input {
     }
 
     .mapSc .van-popup {
-        height: 46%;
+        // height: 50%;
+        height: 51vh;
+        padding-bottom: 20px;
     }
+
+    
+}
+
+.van-dialog .van-dialog__header, .van-dialog .van-dialog__message{
+    color:#ccc !important;
+}
+.van-dialog__header{
+    color:#333333!important;
+}
+.van-dialog{
+    padding-bottom: 0!important;
+}
+.van-dialog__footer{
+    border-top: 1px solid #ccc;
+}
+.van-dialog__cancel, .van-dialog__confirm{
+    border-right: 1px solid #ccc;
+}
+.van-dialog__footer{
+    height: 60px!important;
+}
+.van-dialog__cancel, .van-dialog__confirm{
+    height: 60px!important;
+}
+.van-dialog .van-dialog__cancel .van-button__text {
+    border: 0; 
+    color: #2ab1f3;
+}
+.van-dialog .van-dialog__confirm .van-button__text {
+    background: #fff;
+    color: #2ab1f3;
+}
+.van-dialog .van-dialog__message {
+    padding-bottom: 25px !important;
 }

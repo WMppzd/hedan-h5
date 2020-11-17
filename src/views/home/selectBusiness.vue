@@ -19,10 +19,10 @@
                     <van-icon class="input_icon" name="search" v-else />
                 </div>
             </div>
-            <p v-if="keyword.length == 0">请选择你想要标记的品牌</p>
+            <p v-if="keyword.length == 0" style="z-index:888;">请选择你想要标记的品牌</p>
         </div>
         <div class="popup" v-if="keyword.length == 0">
-            <van-index-bar :sticky="false" :index-list="indexList" highlight-color="rgb(99, 97, 235)">
+            <van-index-bar sticky="true"  :index-list="indexList" highlight-color="rgb(99, 97, 235)">
                 <div v-for="(item, key) in data" :key="key">
                     <van-index-anchor :index="key.split('')[0]">{{ key }}</van-index-anchor>
                     <van-cell v-for="(ele, i) in item" :key="i">
@@ -367,7 +367,7 @@ export default {
     width: 100%;
     padding: 0 10px;
     background-color: $bg_c;
-    padding-top: 345px;
+    padding-top: 360px;
     min-height: 100%;
     .fix-h {
         position: absolute;
@@ -379,7 +379,7 @@ export default {
         z-index: 99;
     }
     .popup {
-        height: calc(100vh - 340px);
+        height: calc(100vh - 380px);
         overflow-y: auto;
     }
     .header {
@@ -489,7 +489,7 @@ export default {
         background-color: $bg_c;
         padding: 30px;
         margin-top: -60px;
-        height: calc(100vh - 600px);
+        height: calc(100vh - 350px);
         width: 100%;
         .list {
             height: 100%;
@@ -510,7 +510,7 @@ export default {
     }
     .fix_bottom {
         position: fixed;
-        z-index: 99;
+        z-index: 100;
         width: 100%;
         height: 180px;
         bottom: 0;
@@ -589,7 +589,7 @@ export default {
         .btn_box {
             width: 80%;
             height: 80px;
-            margin: 0 auto;
+            margin: 10px auto;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -616,7 +616,7 @@ export default {
         }
 
         img {
-            width: 80%;
+            width: 95%;
         }
     }
 
