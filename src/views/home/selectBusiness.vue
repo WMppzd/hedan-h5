@@ -84,24 +84,27 @@
                     </div>
                     <div>专属地图制作完成啦～</div>
                     <div class="canMap">
-                        <img src="../../assets/business/bg.jpg" alt="" v-show="!this.token" />
-                        <img :src="canvasPng" alt="" v-show="this.token" />
+                        <!-- <img src="../../assets/business/bg.jpg" alt="" v-show="!this.token" /> -->
+                        <img :src="canvasPng" alt="" />
                         <canvas id="imageView" ref="imageView" v-show="false"></canvas>
                     </div>
-                    <div class="btn_save" @click="savePic" v-if="!this.token">保存专属地图</div>
+                    <div class="btn_box" v-if="!this.token">
+                        <div class="share_btn" @click="Geneshare">分享</div>
+                        <div class="btn_save" @click="savePic">保存高清大图</div>
+                    </div>
                     <div class="tishi" v-if="this.token">提示：长按图片保存到手机</div>
-                    <div class="btn"  v-if="this.token" @click="Geneshare" style="width:150px;margin: 0 auto;margin-top: 6px;">分享</div>
+                    <div class="btn" v-if="this.token" @click="Geneshare" style="width: 150px; margin: 0 auto; margin-top: 6px">分享</div>
                 </div>
             </van-popup>
 
             <div class="wrapper" v-if="showShare">
-                     <div class="wrapper-contant">
-                        <div>点击右上角 “...” </div>
-                        <div>分享给其他大小孩～</div>
-                    </div>
-                    <div class="wrapper-img">
-                        <img src="../../assets/business/shares.png" alt="" />
-                    </div>
+                <div class="wrapper-contant">
+                    <div>点击右上角 “...”</div>
+                    <div>分享给其他大小孩～</div>
+                </div>
+                <div class="wrapper-img">
+                    <img src="../../assets/business/shares.png" alt="" />
+                </div>
             </div>
         </div>
     </div>
@@ -110,10 +113,10 @@
 <script>
 import { mapGetters } from 'vuex';
 import businessList from '../../utils/businessData';
-import { IndexBar, IndexAnchor, Checkbox, CheckboxGroup, ActionSheet, Search, Popup } from 'vant';
+import { IndexBar, IndexAnchor, Checkbox, CheckboxGroup, ActionSheet, Search, Popup, Dialog } from 'vant';
 import 'script-loader!createjs/builds/1.0.0/createjs.min.js';
 import zuobiao from '../../utils/zuobiao';
-import wx from 'weixin-js-sdk'
+import wx from 'weixin-js-sdk';
 import { jsConfig } from '../../api/info';
 export default {
     name: 'selectBusiness-container',
@@ -126,12 +129,12 @@ export default {
             showMap: false,
             scMap: false,
             showts: false,
-            showShare:false,
+            showShare: false,
             keyword: '',
             searchList: [],
             selectListMap: [],
             canvasPng: '',
-            imgshare:require('../../assets/business/dan.png')
+            imgshare: require('../../assets/business/dan.png')
         };
     },
     components: {
@@ -142,6 +145,7 @@ export default {
         [ActionSheet.name]: ActionSheet,
         [Search.name]: Search,
         [Popup.name]: Popup,
+        [Dialog.name]: Dialog
     },
     computed: {
         ...mapGetters({
@@ -164,13 +168,22 @@ export default {
         },
         savePic() {
             if (!this.token) {
-                this.$store.commit('SET_LIST', this.selectList);
-                this.$router.push({
-                    path: '/login',
-                    query: {
-                        from: 'selectBusiness'
-                    }
-                });
+                Dialog.confirm({
+                    title: '注意',
+                    message: '登录后即可保存高清大图至相册哦~',
+                    confirmButtonText: '登陆并保存',
+                    cancelButtonText: '不保存了'
+                })
+                    .then(() => {
+                        this.$store.commit('SET_LIST', this.selectList);
+                        this.$router.push({
+                            path: '/login',
+                            query: {
+                                from: 'selectBusiness'
+                            }
+                        });
+                    })
+                    .catch(() => {});
             }
         },
         // 返回
@@ -200,12 +213,12 @@ export default {
                 var stage = new createjs.Stage('imageView'); //创建一个舞台
                 var image = new Image();
                 image.src = require('../../assets/business/bg.jpg');
-                image.onload = handlerImageLoad;  //启动函数
+                image.onload = handlerImageLoad; //启动函数
                 function handlerImageLoad(event) {
-                    var theBitmap = new createjs.Bitmap(image);  //位图实例化
+                    var theBitmap = new createjs.Bitmap(image); //位图实例化
                     // 设置画布大小等于图片实际大小
                     stage.canvas.width = theBitmap.image.naturalWidth;
-                    stage.canvas.height = theBitmap.image.naturalHeight;  // 获取图片原始宽高
+                    stage.canvas.height = theBitmap.image.naturalHeight; // 获取图片原始宽高
                     theBitmap.set({ x: 0, y: 0, scaleX: 1, scaleY: 1 }); //边界
                     // 把Bitmap 实例添加到 stage 的显示列表中
                     stage.addChild(theBitmap);
@@ -259,52 +272,49 @@ export default {
         },
 
         Jump() {
-            window.location.href = 'http://www.hedan.art/';
+            window.location.href = 'https://m.hedan.art';
         },
 
-         Geneshare(){
-          this.showShare = true
+        Geneshare() {
+            this.showShare = true;
+            let that = this;
+            let test = {
+                url: process.env.VUE_APP_COURSE
+            };
+            jsConfig(test).then((response) => {
+                if (response.data.code == 'OK') {
+                    let { appId, timestamp, nonceStr, signature, url } = response.data.data;
 
-          let test = {
-              url:  process.env.VUE_APP_COURSE
-          }
-          jsConfig(test).then(response => {
-                    if (response.data.code == 'OK') {
-                       let {appId , timestamp , nonceStr , signature , url} = response.data.data ;
-                      
-                        wx.config({
-                            debug: false,// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                            appId: appId,         // 必填，公众号的唯一标识，填自己的！
-                            timestamp: timestamp, // 必填，生成签名的时间戳，刚才接口拿到的数据
-                            nonceStr: nonceStr,   // 必填，生成签名的随机串
-                            signature: signature, // 必填，签名，见附录1
-                            jsApiList: [
-                                'onMenuShareTimeline',
-                                'onMenuShareAppMessage'
-                            ]
-                        })
+                    wx.config({
+                        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        appId: appId, // 必填，公众号的唯一标识，填自己的！
+                        timestamp: timestamp, // 必填，生成签名的时间戳，刚才接口拿到的数据
+                        nonceStr: nonceStr, // 必填，生成签名的随机串
+                        signature: signature, // 必填，签名，见附录1
+                        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+                    });
 
-                        wx.ready(function(){
-                             wx.onMenuShareAppMessage({
-                                title: '个性化逛展地图生成器 Powered by 盒DAN',
-                                desc: '点击开始生成', 
-                                link: url,  //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                                imgUrl: this.imgshare,
-                                type: '',
-                                dataUrl: '', 
-                                success: function () {
-                                    console.log("分享成功");
-                                },
-                                cancel: function () {
-                                    console.log("取消分享");
-                                }
-                             })
-                        })
-                    }
-          })
-
-        
-      },
+                    wx.ready(function () {
+                        wx.onMenuShareAppMessage({
+                            title: '个性化逛展地图生成器 Powered by 盒DAN',
+                            desc: '点击开始生成',
+                            link: url, //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            imgUrl: 'http://file.hedan.art/share.jpg',
+                            type: '',
+                            dataUrl: '',
+                            success: function () {
+                                that.showShare = false;
+                                console.log('分享成功');
+                            },
+                            cancel: function () {
+                                that.showShare = false;
+                                console.log('取消分享');
+                            }
+                        });
+                    });
+                }
+            });
+        }
     },
     created() {
         let data = {};
@@ -362,7 +372,7 @@ export default {
         height: 340px;
         z-index: 99;
     }
-    .popup{
+    .popup {
         height: calc(100vh - 340px);
         overflow-y: auto;
     }
@@ -570,55 +580,72 @@ export default {
         .tishi {
             color: red;
         }
-        .btn_save {
+        .btn_box {
             width: 80%;
-            margin: 0 auto;
-            background-color: $z_c;
             height: 80px;
-            border-radius: 12px;
-            text-align: center;
-            line-height: 80px;
-            color: #fff;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 26px;
+            .share_btn {
+                flex: 1;
+                background-color: #fff;
+                border-radius: 12px;
+                text-align: center;
+                line-height: 80px;
+                color: #000;
+                margin-right: 40px;
+                border: 1px solid #000;
+            }
+            .btn_save {
+                flex: 1;
+                background-color: $z_c;
+                border-radius: 12px;
+                text-align: center;
+                line-height: 80px;
+                color: #fff;
+                border: 1px solid $z_c;
+            }
         }
+
         img {
             width: 80%;
         }
-        
     }
 
     canvas {
         width: 100%;
     }
 
-    .wrapper{
-            position: fixed;
-            top: 120px;
-            width: 90%;
-            height: 130px;
-            margin: 0 auto;
-            border-radius: 20px;
-            background-color: $z_c;
-            padding: 20px;
-            color: #fff;
-            z-index: 9999;
-        .wrapper-contant{
-              display: flex;
-              flex-direction: column;
-              div:first-child{
-                  margin-bottom: 15px;
-              }
+    .wrapper {
+        position: fixed;
+        top: 120px;
+        width: 90%;
+        height: 130px;
+        margin: 0 auto;
+        border-radius: 20px;
+        background-color: $z_c;
+        padding: 20px;
+        color: #fff;
+        z-index: 9999;
+        .wrapper-contant {
+            display: flex;
+            flex-direction: column;
+            div:first-child {
+                margin-bottom: 15px;
+            }
         }
-        .wrapper-img{
+        .wrapper-img {
             position: absolute;
             right: 20px;
             top: -110px;
             width: 260px;
             height: 100px;
-            img{
+            img {
                 width: 100%;
             }
         }
-        
-       }
+    }
 }
 </style>
