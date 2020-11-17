@@ -90,6 +90,7 @@
                     </div>
                     <div class="btn_save" @click="savePic" v-if="!this.token">保存专属地图</div>
                     <div class="tishi" v-if="this.token">提示：长按图片保存到手机</div>
+                    <!-- <div class="btn"  v-if="this.token" style="width:150px;margin: 0 auto;margin-top: 6px;">分享</div> -->
                 </div>
             </van-popup>
         </div>
@@ -126,7 +127,7 @@ export default {
         [CheckboxGroup.name]: CheckboxGroup,
         [ActionSheet.name]: ActionSheet,
         [Search.name]: Search,
-        [Popup.name]: Popup
+        [Popup.name]: Popup,
     },
     computed: {
         ...mapGetters({
@@ -174,7 +175,6 @@ export default {
                     return ele.id;
                 });
                 that.handlerImageLoad();
-                // that.$store.commit('SET_LIST', '');
             }, 1000);
         },
 
@@ -183,17 +183,16 @@ export default {
                 // 通过画布ID 创建一个 Stage 实例
                 // 创建一个 Bitmap 实例
                 var _this = this;
-                var stage = new createjs.Stage('imageView');
+                var stage = new createjs.Stage('imageView'); //创建一个舞台
                 var image = new Image();
                 image.src = require('../../assets/business/bg.jpg');
-                image.onload = handlerImageLoad;
+                image.onload = handlerImageLoad;  //启动函数
                 function handlerImageLoad(event) {
-                    var theBitmap = new createjs.Bitmap(image);
+                    var theBitmap = new createjs.Bitmap(image);  //位图实例化
                     // 设置画布大小等于图片实际大小
-
                     stage.canvas.width = theBitmap.image.naturalWidth;
-                    stage.canvas.height = theBitmap.image.naturalHeight;
-                    theBitmap.set({ x: 0, y: 0, scaleX: 1, scaleY: 1 });
+                    stage.canvas.height = theBitmap.image.naturalHeight;  // 获取图片原始宽高
+                    theBitmap.set({ x: 0, y: 0, scaleX: 1, scaleY: 1 }); //边界
                     // 把Bitmap 实例添加到 stage 的显示列表中
                     stage.addChild(theBitmap);
                     var image1 = new Image();
@@ -284,6 +283,10 @@ export default {
             this.handlerImageLoad();
             // this.$store.commit('SET_LIST', '');
         }
+
+        // businessList.forEach(r=>{
+        //     this.selectListMap.push(r.id)
+        // })
     }
 };
 </script>
@@ -386,7 +389,7 @@ export default {
         position: relative;
         b {
             display: inline-block;
-            width: 60px;
+            width: 70px;
             font-size: 32px;
             color: $z_c;
             margin-right: 20px;
@@ -502,7 +505,7 @@ export default {
             margin-bottom: 20px;
         }
         .canMap {
-            margin: 40px 20px;
+            margin: 20px;
         }
         .tishi {
             color: red;

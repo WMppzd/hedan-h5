@@ -54,7 +54,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { Icon } from 'vant';
-import { getSigninfo } from '@/api/info';
+import { getSigninfo , sendCodeinfo , verifyinfo } from '@/api/info';
 import axios from 'axios';
 import md5 from 'js-md5';
 export default {
@@ -89,7 +89,6 @@ export default {
             const {
                 mobile,
                 code
-                // country_code: { phone_code }
             } = this.form;
             if (!mobile) {
                 this.$toast({ message: '请输入账号', icon: 'warning', duration: 1500, className: 'passport-toast' });
@@ -107,8 +106,36 @@ export default {
                 return false;
             }
             let that = this;
-            axios
-                .post('api/api/passport/login/verify', {
+            // axios
+            //     .post('api/api/passport/login/verify', {
+            //         invitationCode: '',
+            //         isCheckSmsCode: true,
+            //         isUseInvite: false,
+            //         loginRecordForm: {
+            //             deviceNumber: '',
+            //             download: '',
+            //             ip: '',
+            //             phoneModel: '',
+            //             system: ''
+            //         },
+            //         mobile: that.form.mobile,
+            //         smsCode: that.form.code,
+            //         stickerInviteCode: ''
+            //     })
+            //     .then(function (response) {
+            //         if (response.data.code == 'OK') {
+            //             that.$toast({ message: '登录成功！', icon: 'success', duration: 1500, className: 'passport-toast' });
+            //             that.$store.commit('SET_USERINFO', response.data.data);
+            //             that.$store.commit('SET_TOKEN', response.data.data.token);
+            //             if (that.$route.query.from) {
+            //                 that.$router.push(`/${that.$route.query.from}`);
+            //             } else {
+            //                 that.$router.push('/');
+            //             }
+            //         }
+            //     });
+
+                let test = {
                     invitationCode: '',
                     isCheckSmsCode: true,
                     isUseInvite: false,
@@ -122,11 +149,9 @@ export default {
                     mobile: that.form.mobile,
                     smsCode: that.form.code,
                     stickerInviteCode: ''
-                })
-                .then(function (response) {
-                    if (response.data.code == 'OK') {
-                        that.$toast({ message: '登录成功！', icon: 'success', duration: 1500, className: 'passport-toast' });
-                        // console.log(response.data.data)
+                }
+                verifyinfo(test).then(response => {
+                     that.$toast({ message: '登录成功！', icon: 'success', duration: 1500, className: 'passport-toast' });
                         that.$store.commit('SET_USERINFO', response.data.data);
                         that.$store.commit('SET_TOKEN', response.data.data.token);
                         if (that.$route.query.from) {
@@ -134,8 +159,7 @@ export default {
                         } else {
                             that.$router.push('/');
                         }
-                    }
-                });
+                })
         },
 
         // 获取验签
@@ -143,7 +167,6 @@ export default {
             const {
                 mobile,
                 code
-                // country_code: { phone_code }
             } = this.form;
             if (!mobile) {
                 this.$toast({ message: '请输入账号', icon: 'warning', duration: 1500, className: 'passport-toast' });
@@ -159,33 +182,47 @@ export default {
             if (!this.isCanClick) return false;
             this.isCanClick = false;
             let that = this;
-            axios
-                .post('api/api/sms/getSign', {
-                    mobile: mobile
-                })
-                .then(function (response) {
+            // axios
+            //     .post('api/api/sms/getSign', {
+            //         mobile: mobile
+            //     })
+            //     .then(function (response) {
+            //         if (response.data.code == 'OK') {
+            //             let secrets = md5(response.data.data.sign + 'PQnnhKtCbYNJPbgvIbSs@NJBZqA0u9MJ');
+            //             that.sendCodelogin(secrets);
+            //         }
+            //     })
+            //     .catch(function (error) {
+            //         console.log(error);
+            //     });
+            getSigninfo({ mobile: mobile})
+                .then(response => {
                     if (response.data.code == 'OK') {
                         let secrets = md5(response.data.data.sign + 'PQnnhKtCbYNJPbgvIbSs@NJBZqA0u9MJ');
                         that.sendCodelogin(secrets);
                     }
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
         },
         // 获取验证码
         sendCodelogin(secrets) {
             let that = this;
-            axios
-                .post('api/api/sms/sendCode/login', {
-                    mobile: this.form.mobile,
-                    secret: secrets
-                })
-                .then(function (response) {
+            // axios
+            //     .post('api/api/sms/sendCode/login', {
+            //         mobile: this.form.mobile,
+            //         secret: secrets
+            //     })
+            //     .then(function (response) {
+            //         if (response.data.code == 'OK') {
+            //             that.handleCount();
+            //         }
+            //     });
+            sendCodeinfo({mobile: this.form.mobile,secret: secrets})
+                .then(response => {
                     if (response.data.code == 'OK') {
                         that.handleCount();
                     }
-                });
+                })
+                
         },
         // 倒计时
         handleCount() {
