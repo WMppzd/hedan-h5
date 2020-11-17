@@ -8,9 +8,9 @@ Toast.setDefaultOptions({ duration: 2000 });
 
 const service = axios.create({
     timeout: 10000,
-    transformRequest: [data => qs.stringify(data)],
+    // transformRequest: [data => data],
     headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
     }
 });
 
@@ -19,8 +19,6 @@ service.interceptors.request.use(
     config => {
         if (store.getters.token) {
             config.headers['Authorization'] = `Bearer ${store.getters.token}`;
-            // config.headers['Authorization'] =
-            //     'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvcGFzc3BvcnRkZXYuZG91c2hlbi5jb20iLCJhdWQiOiJodHRwczpcL1wvcGFzc3BvcnRkZXYuZG91c2hlbi5jb20iLCJpYXQiOjE1OTMzMzIzNjQsIm5iZiI6MTU5MzMzMjM2NCwianRpIjozNDc4MjR9.UIke43xwQfOPQzxmMsiT7w-TcyHmqdacp1JFRBo16E0';
         }
         return config;
     },
@@ -32,23 +30,7 @@ service.interceptors.request.use(
 // respone拦截器
 service.interceptors.response.use(
     response => {
-        // alert(response.config.url);
-        let request_url = response.config.url;
-        let requestList=['/order/order/create' , '/order/order/pullstartclass','/activity/share/bind','/activity/share/uploadwechat']
-        if (requestList.includes(request_url)) {
-            return response.data;
-        } else if (response.data.code == 607 && request_url === '/userve/user/login'){
-            return response.data
-        } else {
-            const { code, data, err_msg, tips, statusCode } = response.data;
-            if (code === 200 || statusCode === 0 || statusCode === 200) {
-                return data;
-            } else {
-                let msg = tips || err_msg;
-                Toast({ message: msg, className: 'passport-toast' });
-                return Promise.reject(msg);
-            }
-        }
+        return response
     },
     error => {
         if (error.code === 'ECONNABORTED') {
@@ -65,6 +47,6 @@ const URLS = {
 export default function(config) {
     let uri = URLS[config['type']];
     if (!uri) throw '未获取到该type对应的baseURL---' + config['type'];
-    config.baseURL = uri;
+    // config.baseURL = uri;
     return service(config);
 }

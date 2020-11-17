@@ -54,7 +54,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { Icon } from 'vant';
-import { getSigninfo , sendCodeinfo , verifyinfo } from '@/api/info';
+import { getSigninfo , sendCodeinfo , verifyinfo } from '../../api/info';
 import axios from 'axios';
 import md5 from 'js-md5';
 export default {
@@ -205,6 +205,7 @@ export default {
         },
         // 获取验证码
         sendCodelogin(secrets) {
+          
             let that = this;
             // axios
             //     .post('api/api/sms/sendCode/login', {

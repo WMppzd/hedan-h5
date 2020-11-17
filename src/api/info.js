@@ -30,3 +30,14 @@ export function verifyinfo(data) {
         data: data
     });
 }
+// 
+
+// 获取分享信息
+export function jsConfig(data) {
+    return request({
+        type: 'getSign',
+        url: '/api/system/jsConfig',
+        method: 'get',
+        params: data
+    });
+}

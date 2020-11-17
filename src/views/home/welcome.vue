@@ -42,7 +42,7 @@
                     <div class="welcome-share" @click="Geneshare" v-if="showToken">分享</div>
                 </div>
             
-                <div class="btn" @click="$router.push('/selectBusiness')" v-if="!showToken">开始制作</div>
+                <div class="btn" @click="begin()" v-if="!showToken">开始制作</div>
             </div>
 
             <van-overlay :show="showShare" @click="showShare = false">
@@ -68,12 +68,14 @@ import { mapGetters } from 'vuex';
 import { Overlay } from 'vant';
 import axios from 'axios';
 import wx from 'weixin-js-sdk'
+import { jsConfig } from '../../api/info';
 export default {
     data() {
         return {
             showToken:false,
             showShare:false,
             showLoading:false,
+            imgshare:require('../../assets/business/dan.png')
         };
     },
     components: {
@@ -94,20 +96,20 @@ export default {
           this.$router.push('/selectBusiness')
       },
 
+      begin(){
+          this.$store.commit('SET_LIST', '');
+          this.$router.push('/selectBusiness')
+      },
+
       Geneshare(){
           this.showShare = true
 
-          let that = this;
-            axios
-                .get('api/api/system/jsConfig', {
-                    params:{
-                         url:  process.env.VUE_APP_COURSE
-                    }
-                })
-                .then(function (response) {
+          let test = {
+              url:  process.env.VUE_APP_COURSE
+          }
+          jsConfig(test).then(response => {
                     if (response.data.code == 'OK') {
-
-                        let {appId , timestamp , nonceStr , signature} = response.data.data ;
+                       let {appId , timestamp , nonceStr , signature , url} = response.data.data ;
                       
                         wx.config({
                             debug: false,// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -123,10 +125,10 @@ export default {
 
                         wx.ready(function(){
                              wx.onMenuShareAppMessage({
-                                title: 'hei',
-                                desc: '这件商品终于优惠了，每件只需元', 
-                                link: response.data.data.url, //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                                imgUrl: '',
+                                title: '个性化逛展地图生成器 Powered by 盒DAN',
+                                desc: '点击开始生成', 
+                                link: url,  //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                                imgUrl: this.imgshare,
                                 type: '',
                                 dataUrl: '', 
                                 success: function () {
@@ -137,12 +139,51 @@ export default {
                                 }
                              })
                         })
-
                     }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+          })
+
+            // axios
+            //     .get('api/api/system/jsConfig', {
+            //         params:{
+            //              url:  process.env.VUE_APP_COURSE
+            //         }
+            //     })
+            //     .then(function (response) {
+            //         if (response.data.code == 'OK') {
+
+            //             let {appId , timestamp , nonceStr , signature} = response.data.data ;
+                      
+            //             wx.config({
+            //                 debug: false,// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            //                 appId: appId,         // 必填，公众号的唯一标识，填自己的！
+            //                 timestamp: timestamp, // 必填，生成签名的时间戳，刚才接口拿到的数据
+            //                 nonceStr: nonceStr,   // 必填，生成签名的随机串
+            //                 signature: signature, // 必填，签名，见附录1
+            //                 jsApiList: [
+            //                     'onMenuShareTimeline',
+            //                     'onMenuShareAppMessage'
+            //                 ]
+            //             })
+
+            //             wx.ready(function(){
+            //                  wx.onMenuShareAppMessage({
+            //                     title: 'hei',
+            //                     desc: '这件商品终于优惠了，每件只需元', 
+            //                     link: response.data.data.url, //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            //                     imgUrl: '',
+            //                     type: '',
+            //                     dataUrl: '', 
+            //                     success: function () {
+            //                         console.log("分享成功");
+            //                     },
+            //                     cancel: function () {
+            //                         console.log("取消分享");
+            //                     }
+            //                  })
+            //             })
+
+            //         }
+            //     })
       },
 
       Jump() {

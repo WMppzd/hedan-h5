@@ -4,9 +4,8 @@ const path = require('path');
 function resolve(dir) {
     return path.join(__dirname, dir);
 }
-const staticDomain = '//ip-29-hedan-app.coralcodes.com/welcome/';
 module.exports = {
-    publicPath: process.env.NODE_ENV === 'production' ? staticDomain : '/',
+    publicPath:  '/',
     outputDir: 'dist',
     assetsDir: 'static',
     lintOnSave: false,
@@ -35,17 +34,17 @@ module.exports = {
             warnings: false,
             errors: true
         },
-        // proxy: {
-        //     '/api': {
-        //         target: 'http://ip-29-hedan-app.coralcodes.com',   // 请求服务器根路径
-        //         changeOrigin: true,    // 是否跨域
-        //         source:false,
-        //         ws: true,   // websocket
-        //         pathRewrite: {    // 重写路径: 当检测到请求地址里包含 /v1 时,将此路径进行跨域代理操作
-        //             '^/api': ''
-        //         }
-        //     }
-        // }
+        proxy: {
+            '/api': {
+                target: 'http://ip-29-hedan-app.coralcodes.com',   // 请求服务器根路径
+                changeOrigin: true,    // 是否跨域
+                source:false,
+                ws: true,   // websocket
+                pathRewrite: {    // 重写路径: 当检测到请求地址里包含 /v1 时,将此路径进行跨域代理操作
+                    '^/api': ''
+                }
+            }
+        }
     },
     chainWebpack: config => {
         if (process.env.npm_config_report) {

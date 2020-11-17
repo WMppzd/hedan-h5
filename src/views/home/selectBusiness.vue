@@ -21,7 +21,7 @@
             </div>
             <p v-if="keyword.length == 0">请选择你想要标记的品牌</p>
         </div>
-        <div v-if="keyword.length == 0">
+        <div class="popup" v-if="keyword.length == 0">
             <van-index-bar :sticky="false" :index-list="indexList" highlight-color="rgb(99, 97, 235)">
                 <div v-for="(item, key) in data" :key="key">
                     <van-index-anchor :index="key.split('')[0]">{{ key }}</van-index-anchor>
@@ -80,7 +80,7 @@
                 <div class="scMap">
                     <div class="mt80">
                         你的
-                        <span class="scMapspan">TAC上海潮流玩具展</span>
+                        <span class="scMapspan">杭州艺术设计玩具展</span>
                     </div>
                     <div>专属地图制作完成啦～</div>
                     <div class="canMap">
@@ -90,9 +90,19 @@
                     </div>
                     <div class="btn_save" @click="savePic" v-if="!this.token">保存专属地图</div>
                     <div class="tishi" v-if="this.token">提示：长按图片保存到手机</div>
-                    <div class="btn"  v-if="this.token" style="width:150px;margin: 0 auto;margin-top: 6px;">分享</div>
+                    <div class="btn"  v-if="this.token" @click="Geneshare" style="width:150px;margin: 0 auto;margin-top: 6px;">分享</div>
                 </div>
             </van-popup>
+
+            <div class="wrapper" v-if="showShare">
+                     <div class="wrapper-contant">
+                        <div>点击右上角 “...” </div>
+                        <div>分享给其他大小孩～</div>
+                    </div>
+                    <div class="wrapper-img">
+                        <img src="../../assets/business/shares.png" alt="" />
+                    </div>
+            </div>
         </div>
     </div>
 </template>
@@ -103,6 +113,8 @@ import businessList from '../../utils/businessData';
 import { IndexBar, IndexAnchor, Checkbox, CheckboxGroup, ActionSheet, Search, Popup } from 'vant';
 import 'script-loader!createjs/builds/1.0.0/createjs.min.js';
 import zuobiao from '../../utils/zuobiao';
+import wx from 'weixin-js-sdk'
+import { jsConfig } from '../../api/info';
 export default {
     name: 'selectBusiness-container',
     data() {
@@ -114,10 +126,12 @@ export default {
             showMap: false,
             scMap: false,
             showts: false,
+            showShare:false,
             keyword: '',
             searchList: [],
             selectListMap: [],
-            canvasPng: ''
+            canvasPng: '',
+            imgshare:require('../../assets/business/dan.png')
         };
     },
     components: {
@@ -232,6 +246,7 @@ export default {
                 }
             }
         },
+
         search() {
             if (this.keyword.length == 0) return;
             this.searchList = [];
@@ -242,9 +257,54 @@ export default {
                 }
             });
         },
+
         Jump() {
             window.location.href = 'http://www.hedan.art/';
-        }
+        },
+
+         Geneshare(){
+          this.showShare = true
+
+          let test = {
+              url:  process.env.VUE_APP_COURSE
+          }
+          jsConfig(test).then(response => {
+                    if (response.data.code == 'OK') {
+                       let {appId , timestamp , nonceStr , signature , url} = response.data.data ;
+                      
+                        wx.config({
+                            debug: false,// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                            appId: appId,         // 必填，公众号的唯一标识，填自己的！
+                            timestamp: timestamp, // 必填，生成签名的时间戳，刚才接口拿到的数据
+                            nonceStr: nonceStr,   // 必填，生成签名的随机串
+                            signature: signature, // 必填，签名，见附录1
+                            jsApiList: [
+                                'onMenuShareTimeline',
+                                'onMenuShareAppMessage'
+                            ]
+                        })
+
+                        wx.ready(function(){
+                             wx.onMenuShareAppMessage({
+                                title: '个性化逛展地图生成器 Powered by 盒DAN',
+                                desc: '点击开始生成', 
+                                link: url,  //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                                imgUrl: this.imgshare,
+                                type: '',
+                                dataUrl: '', 
+                                success: function () {
+                                    console.log("分享成功");
+                                },
+                                cancel: function () {
+                                    console.log("取消分享");
+                                }
+                             })
+                        })
+                    }
+          })
+
+        
+      },
     },
     created() {
         let data = {};
@@ -281,12 +341,7 @@ export default {
                 return ele.id;
             });
             this.handlerImageLoad();
-            // this.$store.commit('SET_LIST', '');
         }
-
-        // businessList.forEach(r=>{
-        //     this.selectListMap.push(r.id)
-        // })
     }
 };
 </script>
@@ -299,13 +354,17 @@ export default {
     padding-top: 345px;
     min-height: 100%;
     .fix-h {
-        position: fixed;
+        position: absolute;
         background: $bg_c;
         top: 0;
         left: 0;
         width: 100%;
         height: 340px;
         z-index: 99;
+    }
+    .popup{
+        height: calc(100vh - 340px);
+        overflow-y: auto;
     }
     .header {
         height: 130px;
@@ -500,6 +559,7 @@ export default {
         text-align: center;
         font-size: 30px;
         width: 550px !important;
+        position: relative;
         .scMapspan {
             color: #6361ed;
             margin-bottom: 20px;
@@ -523,10 +583,42 @@ export default {
         img {
             width: 80%;
         }
+        
     }
 
     canvas {
         width: 100%;
     }
+
+    .wrapper{
+            position: fixed;
+            top: 120px;
+            width: 90%;
+            height: 130px;
+            margin: 0 auto;
+            border-radius: 20px;
+            background-color: $z_c;
+            padding: 20px;
+            color: #fff;
+            z-index: 9999;
+        .wrapper-contant{
+              display: flex;
+              flex-direction: column;
+              div:first-child{
+                  margin-bottom: 15px;
+              }
+        }
+        .wrapper-img{
+            position: absolute;
+            right: 20px;
+            top: -110px;
+            width: 260px;
+            height: 100px;
+            img{
+                width: 100%;
+            }
+        }
+        
+       }
 }
 </style>
