@@ -171,7 +171,7 @@ export default {
                 Dialog.confirm({
                     title: '注意',
                     message: '登录后即可保存高清大图至相册哦~',
-                    confirmButtonText: '登陆并保存',
+                    confirmButtonText: '登录并保存',
                     cancelButtonText: '不保存了'
                 })
                     .then(() => {
@@ -352,6 +352,12 @@ export default {
             });
             this.handlerImageLoad();
         }
+
+        console.log(this.$store.state.user.wxshare)
+        if(this.$store.state.user.wxshare != 'wxHedan'){
+            this.$router.push('/');
+        }
+        
     }
 };
 </script>

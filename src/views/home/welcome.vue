@@ -90,12 +90,12 @@ export default {
     methods: {
         Generate() {
             this.$store.commit('SET_LIST', '');
-            this.$router.push('/selectBusiness');
+            this.$router.push({path:'/selectBusiness'});
         },
 
         begin() {
             this.$store.commit('SET_LIST', '');
-            this.$router.push('/selectBusiness');
+            this.$router.push({path:'/selectBusiness'});
         },
 
         Geneshare() {
@@ -186,6 +186,11 @@ export default {
     },
     created() {
         this.userInfo ? (this.showToken = true) : (this.showToken = false);
+        if(this.$store.state.user.wxshare != 'wxHedan'){
+            this.$store.commit('SET_WX', 'wxHedan');
+        }
+
+        
     },
     beforeCreate() {
         let that = this;

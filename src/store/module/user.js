@@ -3,7 +3,8 @@ const user = {
         token: '',
         list: '',
         userinfo: null, //用户信息
-        base64:""
+        base64:"",
+        wxshare:""
     },
     mutations: {
         SET_TOKEN: (state, token) => {
@@ -19,6 +20,9 @@ const user = {
         SET_BASE(state, data) {
             state.base64 = data
         },
+        SET_WX(state,data){
+            state.wxshare = data
+        }
     },
     getters: {
         token: state => state.token,

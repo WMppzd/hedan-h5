@@ -153,7 +153,8 @@ export default {
                     that.$store.commit('SET_USERINFO', response.data.data);
                     that.$store.commit('SET_TOKEN', response.data.data.token);
                     if (that.$route.query.from) {
-                        that.$router.push(`/${that.$route.query.from}`);
+                        // that.$router.push(`/${that.$route.query.from}`);
+                         that.$router.push({path:'/selectBusiness'});
                     } else {
                         that.$router.push('/');
                     }
