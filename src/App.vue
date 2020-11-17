@@ -14,6 +14,9 @@ export default {
             keepAlive: []
         };
     },
+    created(){
+      
+    }
 };
 </script>
 

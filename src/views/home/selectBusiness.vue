@@ -84,13 +84,13 @@
                     </div>
                     <div>专属地图制作完成啦～</div>
                     <div class="canMap">
-                        <img src="../../assets/business/bg.png" alt="" v-show="!this.token" />
+                        <img src="../../assets/business/bg.jpg" alt="" v-show="!this.token" />
                         <img :src="canvasPng" alt="" v-show="this.token" />
                         <canvas id="imageView" ref="imageView" v-show="false"></canvas>
                     </div>
                     <div class="btn_save" @click="savePic" v-if="!this.token">保存专属地图</div>
                     <div class="tishi" v-if="this.token">提示：长按图片保存到手机</div>
-                    <!-- <div class="btn"  v-if="this.token" style="width:150px;margin: 0 auto;margin-top: 6px;">分享</div> -->
+                    <div class="btn"  v-if="this.token" style="width:150px;margin: 0 auto;margin-top: 6px;">分享</div>
                 </div>
             </van-popup>
         </div>
