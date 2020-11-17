@@ -58,7 +58,7 @@ import { getSigninfo , sendCodeinfo , verifyinfo } from '@/api/info';
 import axios from 'axios';
 import md5 from 'js-md5';
 export default {
-    name: 'selectBusiness-container',
+    name: 'login',
     data() {
         return {
             isCanClick: true,

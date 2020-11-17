@@ -59,7 +59,7 @@ service.interceptors.response.use(
 );
 
 const URLS = {
-    getSign: process.env.VUE_APP_COURSE,
+    getSign: process.env.VUE_APP_COURSE
 };
 
 export default function(config) {
