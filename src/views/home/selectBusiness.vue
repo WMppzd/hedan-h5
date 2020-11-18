@@ -10,7 +10,7 @@
                 <div class="down" @click="Jump()">下载APP</div>
             </div>
             <div class="search">
-                <div class="left" @click="$router.go(-1)">
+                <div class="left" @click="$router.push('/')">
                     <van-icon name="arrow-left" />
                 </div>
                 <div class="right">
@@ -22,7 +22,7 @@
             <p v-if="keyword.length == 0" style="z-index:888;">请选择你想要标记的品牌</p>
         </div>
         <div class="popup" v-if="keyword.length == 0">
-            <van-index-bar sticky="true"  :index-list="indexList" highlight-color="rgb(99, 97, 235)">
+            <van-index-bar :sticky="true"  :index-list="indexList" highlight-color="rgb(99, 97, 235)">
                 <div v-for="(item, key) in data" :key="key">
                     <van-index-anchor :index="key.split('')[0]">{{ key }}</van-index-anchor>
                     <van-cell v-for="(ele, i) in item" :key="i">
@@ -76,7 +76,7 @@
         </div>
 
         <div class="mapSc">
-            <van-popup v-model="scMap" round closeable>
+            <van-popup v-model="scMap" round closeable @close='popClose'>
                 <div class="scMap">
                     <div class="mt80">
                         你的
@@ -265,7 +265,7 @@ export default {
             this.searchList = [];
             businessList.forEach((ele) => {
                 let searchWord = ele.name + ele.keyword;
-                if (searchWord.includes(this.keyword)) {
+                if (searchWord.toUpperCase().indexOf(this.keyword.toUpperCase()) != -1) {
                     return this.searchList.push(ele);
                 }
             });
@@ -277,6 +277,10 @@ export default {
 
         Geneshare() {
             this.showShare = true;
+            
+        },
+
+        Geneshares(){
             let that = this;
             let test = {
                 url: process.env.VUE_APP_COURSE
@@ -298,7 +302,7 @@ export default {
                         wx.onMenuShareAppMessage({
                             title: '个性化逛展地图生成器 Powered by 盒DAN',
                             desc: '点击开始生成',
-                            link: url, //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            link: url+ '?id=2', //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                             imgUrl: 'http://file.hedan.art/share.jpg',
                             type: '',
                             dataUrl: '',
@@ -311,9 +315,29 @@ export default {
                                 console.log('取消分享');
                             }
                         });
+
+                        wx.onMenuShareTimeline({
+                            title: '个性化逛展地图生成器 Powered by 盒DAN',
+                            desc: '点击开始生成',
+                            link: url+ '?id=2', //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            imgUrl: 'http://file.hedan.art/share.jpg',
+                            type: '',
+                            dataUrl: '',
+                            success: function () {
+                                console.log('分享成功');
+                            },
+                            cancel: function () {
+                                console.log('取消分享');
+                            }
+                        });
                     });
                 }
             });
+        },
+        
+        // 关闭弹窗事件
+        popClose(){
+            this.showShare = false ;
         }
     },
     created() {
@@ -352,13 +376,12 @@ export default {
             });
             this.handlerImageLoad();
         }
-
-        console.log(this.$store.state.user.wxshare)
-        if(this.$store.state.user.wxshare != 'wxHedan'){
+        if((this.$store.state.user.wxshare != 'wxHedan')|| this.$route.query.id !=1){
             this.$router.push('/');
         }
+        // this.Geneshares()
         
-    }
+    },
 };
 </script>
 

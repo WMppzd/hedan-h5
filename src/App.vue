@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import wx from 'weixin-js-sdk';
+import { jsConfig } from './api/info';
 export default {
     name: 'App',
     data() {
@@ -14,8 +16,62 @@ export default {
             keepAlive: []
         };
     },
+    methods:{
+         Geneshares(){
+             let test = {
+                url: process.env.VUE_APP_COURSE 
+            };
+            jsConfig(test).then((response) => {
+                if (response.data.code == 'OK') {
+                    let { appId, timestamp, nonceStr, signature, url } = response.data.data;
+
+                    wx.config({
+                        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        appId: appId, // 必填，公众号的唯一标识，填自己的！
+                        timestamp: timestamp, // 必填，生成签名的时间戳，刚才接口拿到的数据
+                        nonceStr: nonceStr, // 必填，生成签名的随机串
+                        signature: signature, // 必填，签名，见附录1
+                        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+                    });
+
+                    wx.ready(function () {
+                        wx.onMenuShareAppMessage({
+                            title: '个性化逛展地图生成器 Powered by 盒DAN',
+                            desc: '点击开始生成',
+                            link: url+ '?id=2', //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            imgUrl: 'http://file.hedan.art/share.jpg',
+                            type: '',
+                            dataUrl: '',
+                            success: function () {
+                                console.log('分享成功');
+                            },
+                            cancel: function () {
+                                console.log('取消分享');
+                            }
+                        });
+                    });
+
+                    wx.onMenuShareTimeline({
+                            title: '个性化逛展地图生成器 Powered by 盒DAN',
+                            desc: '点击开始生成',
+                            link: url+ '?id=2', //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            imgUrl: 'http://file.hedan.art/share.jpg',
+                            type: '',
+                            dataUrl: '',
+                            success: function () {
+                                console.log('分享成功');
+                            },
+                            cancel: function () {
+                                console.log('取消分享');
+                            }
+                    });
+                }
+            });
+        }
+    },
     created(){
-      
+    //   this.Geneshares()
+      console.log(22222)
     }
 };
 </script>
