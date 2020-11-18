@@ -157,15 +157,15 @@ input {
         background-color: $z_c !important;
     }
 
-    .van-index-bar{
+    .van-index-bar {
         margin-bottom: 80px;
         // padding-top: 345px;
     }
 
-    .van-index-anchor--sticky{
+    .van-index-anchor--sticky {
         background-color: #f5f6f5;
         margin-top: -6px;
-        transform:'';
+        transform: '';
         position: absolute;
     }
 
@@ -189,42 +189,56 @@ input {
 
     .mapSc .van-popup {
         // height: 50%;
-        height: 51vh;
+        // height: 51vh;
+        height: auto;
         padding-bottom: 20px;
     }
 
-    
+
 }
 
-.van-dialog .van-dialog__header, .van-dialog .van-dialog__message{
-    color:#ccc !important;
+.van-dialog__message {
+    color: #ccc !important;
 }
-.van-dialog__header{
-    color:#333333!important;
+
+.van-dialog__header {
+    color: #333333 !important;
+    font-size: 17px;
+    font-weight: 500;
 }
-.van-dialog{
-    padding-bottom: 0!important;
+
+.van-dialog {
+    padding-bottom: 0 !important;
 }
-.van-dialog__footer{
+
+.van-dialog__footer {
     border-top: 1px solid #ccc;
 }
-.van-dialog__cancel, .van-dialog__confirm{
+
+.van-dialog__cancel,
+.van-dialog__confirm {
     border-right: 1px solid #ccc;
 }
-.van-dialog__footer{
-    height: 60px!important;
+
+.van-dialog__footer {
+    height: 60px !important;
 }
-.van-dialog__cancel, .van-dialog__confirm{
-    height: 60px!important;
+
+.van-dialog__cancel,
+.van-dialog__confirm {
+    height: 60px !important;
 }
+
 .van-dialog .van-dialog__cancel .van-button__text {
-    border: 0; 
-    color: #2ab1f3;
+    border: 0;
+    color: #007AFF;
 }
+
 .van-dialog .van-dialog__confirm .van-button__text {
     background: #fff;
-    color: #2ab1f3;
+    color: #007AFF;
 }
+
 .van-dialog .van-dialog__message {
     padding-bottom: 25px !important;
 }
