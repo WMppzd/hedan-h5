@@ -154,7 +154,7 @@ export default {
                     that.$store.commit('SET_TOKEN', response.data.data.token);
                     if (that.$route.query.from) {
                         // that.$router.push(`/${that.$route.query.from}`);
-                         that.$router.push({path:'/selectBusiness'});
+                        that.$router.push({ path: '/selectBusiness' });
                     } else {
                         that.$router.push('/');
                     }
@@ -257,7 +257,9 @@ export default {
     height: 100vh;
     height: 100%;
     background: #5353da;
-
+    .pad1 {
+        padding: 24px 50px;
+    }
     .login-back {
         line-height: 50px;
         font-size: 40px;
@@ -268,6 +270,8 @@ export default {
         color: #fff;
         font-size: 45px;
         margin-top: 200px;
+        font-weight: 500;
+        padding-bottom: 0;
     }
 
     .login-container {
@@ -328,7 +332,7 @@ export default {
             height: 96px;
             background: #4948c3;
             border-radius: 15px;
-            margin-bottom: 50px;
+            margin-bottom: 32px;
             input {
                 display: block;
                 padding: 0 20px;
@@ -397,9 +401,6 @@ export default {
         margin: 0 auto;
         line-height: 90px;
         border-radius: 15px;
-    }
-    .pad1 {
-        padding: 25px 50px;
     }
 }
 </style>

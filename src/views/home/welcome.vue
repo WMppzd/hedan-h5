@@ -90,21 +90,35 @@ export default {
     methods: {
         Generate() {
             this.$store.commit('SET_LIST', '');
-            this.$router.push({path:'/selectBusiness',query:{id:1}});
+            this.$router.push({ path: '/selectBusiness', query: { id: 1 } });
         },
 
         begin() {
             this.$store.commit('SET_LIST', '');
-            this.$router.push({path:'/selectBusiness',query:{id:1}});
+            this.$router.push({ path: '/selectBusiness', query: { id: 1 } });
         },
 
         Geneshare() {
             this.showShare = true;
         },
 
-        Geneshares(){
-             let test = {
-                url:  process.env.VUE_APP_COURSE
+        Geneshares() {
+
+            const u = navigator.userAgent, app = navigator.appVersion;
+            const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            let wxurl = ''
+            if (isiOS) {
+                console.log("ios");
+                console.log(this.$store.state.user.wsshareUrl)
+                wxurl = this.$store.state.user.wsshareUrl
+            } else{
+               console.log("andriod");
+               console.log(window.location.href)
+               wxurl = window.location.href
+            }
+
+            let test = {
+                url: wxurl
             };
             jsConfig(test).then((response) => {
                 if (response.data.code == 'OK') {
@@ -123,7 +137,7 @@ export default {
                         wx.onMenuShareAppMessage({
                             title: '个性化逛展地图生成器 Powered by 盒DAN',
                             desc: '点击开始生成',
-                            link: url+ '?id=2', //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            link: url + '?id=2', //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                             imgUrl: 'http://file.hedan.art/share.jpg',
                             type: '',
                             dataUrl: '',
@@ -138,7 +152,7 @@ export default {
                         wx.onMenuShareTimeline({
                             title: '个性化逛展地图生成器 Powered by 盒DAN',
                             desc: '点击开始生成',
-                            link: url+ '?id=2', //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            link: url + '?id=2', //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                             imgUrl: 'http://file.hedan.art/share.jpg',
                             type: '',
                             dataUrl: '',
@@ -148,7 +162,7 @@ export default {
                             cancel: function () {
                                 console.log('取消分享');
                             }
-                    });
+                        });
                     });
                 }
             });
@@ -160,11 +174,12 @@ export default {
     },
     created() {
         this.userInfo ? (this.showToken = true) : (this.showToken = false);
-        if(this.$store.state.user.wxshare != 'wxHedan'){
+        if (this.$store.state.user.wxshare != 'wxHedan') {
             this.$store.commit('SET_WX', 'wxHedan');
         }
         this.Geneshares()
-     
+
+        
     },
     beforeCreate() {
         let that = this;
@@ -181,17 +196,17 @@ export default {
     height: 100%;
     position: relative;
     .header {
-        height: 130px;
+        height: 96px;
         width: 100%;
-        padding: 15px 30px;
-        padding-top: 40px;
+        padding: 15px 40px;
         display: flex;
         align-items: center;
         background-color: #fff;
         position: relative;
         margin-bottom: 20px;
         .logo {
-            height: 80px;
+            width: 40px;
+            height: 50px;
             margin-right: 20px;
         }
         .info {
@@ -199,7 +214,7 @@ export default {
                 height: 30px;
             }
             > div {
-                height: 40px;
+                height: 32px;
                 font-size: 24px;
                 line-height: 40px;
             }
@@ -208,7 +223,7 @@ export default {
             font-size: 28px;
             position: absolute;
             right: 40px;
-            top: 40px;
+            top: 16px;
             width: 160px;
             height: 60px;
             border-radius: 8px;
@@ -235,13 +250,13 @@ export default {
         position: fixed;
         // z-index: 99;
         width: 100%;
-        height: 400px;
+        height: 300px;
         border-radius: 40px 40px 0 0;
         bottom: 0;
         left: 0;
         background-color: #fff;
         padding: 0 40px;
-        padding-top: 80px;
+        padding-top: 48px;
         overflow: hidden;
         img {
             position: absolute;
@@ -252,7 +267,7 @@ export default {
         }
         .word {
             line-height: 60px;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             span {
                 color: $z_c;
             }
@@ -265,32 +280,34 @@ export default {
         .btn {
             background-color: $z_c;
             width: 100%;
-            height: 80px;
+            height: 96px;
             border-radius: 12px;
             text-align: center;
             line-height: 80px;
             color: #fff;
         }
         .welcome-tc {
+            width: 100%;
             display: flex;
             justify-content: space-evenly;
             .welcome-Generate {
                 border: 1px solid #1d1212;
-                width: 40%;
-                height: 80px;
+                flex: 1;
+                height: 94px;
                 border-radius: 12px;
                 text-align: center;
-                line-height: 80px;
+                line-height: 96px;
                 color: #1d1212;
                 display: inline-block;
+                margin-right: 32px;
             }
             .welcome-share {
                 background-color: $z_c;
-                width: 40%;
-                height: 80px;
+                flex: 1;
+                height: 96px;
                 border-radius: 12px;
                 text-align: center;
-                line-height: 80px;
+                line-height: 96px;
                 color: #fff;
                 display: inline-block;
             }

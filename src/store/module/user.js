@@ -4,7 +4,8 @@ const user = {
         list: '',
         userinfo: null, //用户信息
         base64:"",
-        wxshare:""
+        wxshare:"",
+        wsshareUrl:''
     },
     mutations: {
         SET_TOKEN: (state, token) => {
@@ -22,6 +23,9 @@ const user = {
         },
         SET_WX(state,data){
             state.wxshare = data
+        },
+        SET_WXURL(state,data){
+            state.wsshareUrl = data
         }
     },
     getters: {

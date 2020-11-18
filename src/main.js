@@ -34,6 +34,13 @@ if (process.env.VUE_APP_IS_DEBUG === 'true') {
     new VConsole();
 }
 
+const u = navigator.userAgent, app = navigator.appVersion;
+  const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+  if (isiOS) {
+    console.log("ios");
+    console.log(window.location.href)
+    store.commit('SET_WXURL', window.location.href);
+  } 
 
 Vue.config.productionTip = false;
 

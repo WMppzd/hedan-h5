@@ -19,10 +19,10 @@
                     <van-icon class="input_icon" name="search" v-else />
                 </div>
             </div>
-            <p v-if="keyword.length == 0" style="z-index:888;">请选择你想要标记的品牌</p>
+            <p v-if="keyword.length == 0" style="z-index: 888">请选择你想要标记的品牌</p>
         </div>
         <div class="popup" v-if="keyword.length == 0">
-            <van-index-bar :sticky="true"  :index-list="indexList" highlight-color="rgb(99, 97, 235)">
+            <van-index-bar :sticky="true" :index-list="indexList" highlight-color="rgb(99, 97, 235)">
                 <div v-for="(item, key) in data" :key="key">
                     <van-index-anchor :index="key.split('')[0]">{{ key }}</van-index-anchor>
                     <van-cell v-for="(ele, i) in item" :key="i">
@@ -76,7 +76,7 @@
         </div>
 
         <div class="mapSc">
-            <van-popup v-model="scMap" round closeable @close='popClose'>
+            <van-popup v-model="scMap" round closeable @close="popClose">
                 <div class="scMap">
                     <div class="mt80">
                         你的
@@ -278,13 +278,26 @@ export default {
 
         Geneshare() {
             this.showShare = true;
-            
         },
 
-        Geneshares(){
+        Geneshares() {
+
+            const u = navigator.userAgent, app = navigator.appVersion;
+            const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            let wxurl = ''
+            if (isiOS) {
+                console.log("ios");
+                console.log(this.$store.state.user.wsshareUrl)
+                wxurl = this.$store.state.user.wsshareUrl
+            } else{
+               console.log("andriod");
+               console.log(window.location.href)
+               wxurl = window.location.href
+            }
+            
             let that = this;
             let test = {
-                url: process.env.VUE_APP_COURSE
+                url:wxurl
             };
             jsConfig(test).then((response) => {
                 if (response.data.code == 'OK') {
@@ -303,7 +316,7 @@ export default {
                         wx.onMenuShareAppMessage({
                             title: '个性化逛展地图生成器 Powered by 盒DAN',
                             desc: '点击开始生成',
-                            link: url+ '?id=2', //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            link: url + '?id=2', //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                             imgUrl: 'http://file.hedan.art/share.jpg',
                             type: '',
                             dataUrl: '',
@@ -320,7 +333,7 @@ export default {
                         wx.onMenuShareTimeline({
                             title: '个性化逛展地图生成器 Powered by 盒DAN',
                             desc: '点击开始生成',
-                            link: url+ '?id=2', //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            link: url + '?id=2', //分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                             imgUrl: 'http://file.hedan.art/share.jpg',
                             type: '',
                             dataUrl: '',
@@ -335,10 +348,10 @@ export default {
                 }
             });
         },
-        
+
         // 关闭弹窗事件
-        popClose(){
-            this.showShare = false ;
+        popClose() {
+            this.showShare = false;
         }
     },
     created() {
@@ -377,7 +390,7 @@ export default {
             });
             this.handlerImageLoad();
         }
-        if((this.$store.state.user.wxshare != 'wxHedan')|| this.$route.query.id !=1){
+        if (this.$store.state.user.wxshare != 'wxHedan' || this.$route.query.id != 1) {
             this.$router.push('/');
         }
         this.Geneshares()
@@ -407,17 +420,17 @@ export default {
         overflow-y: auto;
     }
     .header {
-        height: 130px;
+        height: 96px;
         width: 100%;
-        padding: 15px 30px;
-        padding-top: 40px;
+        padding: 15px 40px;
         display: flex;
         align-items: center;
         background-color: #fff;
         position: relative;
         margin-bottom: 20px;
         .logo {
-            height: 80px;
+            width: 40px;
+            height: 50px;
             margin-right: 20px;
         }
         .info {
@@ -425,7 +438,7 @@ export default {
                 height: 30px;
             }
             > div {
-                height: 40px;
+                height: 32px;
                 font-size: 24px;
                 line-height: 40px;
             }
@@ -434,7 +447,7 @@ export default {
             font-size: 28px;
             position: absolute;
             right: 40px;
-            top: 40px;
+            top: 16px;
             width: 160px;
             height: 60px;
             border-radius: 8px;
@@ -502,8 +515,9 @@ export default {
             top: 0;
         }
         .clear {
+            font-size: 44px;
             position: absolute;
-            right: 40px;
+            right: 32px;
             top: 0;
         }
     }
@@ -566,16 +580,16 @@ export default {
             }
         }
         .btn {
-            width: calc(50% - 80px);
+            width: calc(50% - 48px);
             position: absolute;
-            bottom: 70px;
-            right: 40px;
+            bottom: 32px;
+            right: 32px;
         }
         .btnBack {
-            width: calc(50% - 80px);
+            width: calc(50% - 48px);
             position: absolute;
-            bottom: 70px;
-            left: 40px;
+            bottom: 32px;
+            left: 32px;
             border: 1px solid #1d1212;
             background: #fff;
             color: #1d1212;
@@ -584,13 +598,14 @@ export default {
 
     .showMap {
         text-align: center;
-        font-size: 35px;
-        width: 500px !important;
+        font-size: 32px;
+        width: 480px !important;
         .pad {
             padding: 10px 20px;
         }
         img {
-            width: 80%;
+            width: 240px;
+            padding-bottom: 22px;
             // margin-bottom: 20px;
         }
     }
