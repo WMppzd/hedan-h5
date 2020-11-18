@@ -179,7 +179,8 @@ export default {
                         this.$router.push({
                             path: '/login',
                             query: {
-                                from: 'selectBusiness'
+                                from: 'selectBusiness',
+                                id:1
                             }
                         });
                     })
@@ -379,7 +380,7 @@ export default {
         if((this.$store.state.user.wxshare != 'wxHedan')|| this.$route.query.id !=1){
             this.$router.push('/');
         }
-        // this.Geneshares()
+        this.Geneshares()
         
     },
 };

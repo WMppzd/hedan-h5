@@ -104,7 +104,7 @@ export default {
 
         Geneshares(){
              let test = {
-                url: process.env.VUE_APP_COURSE
+                url:  process.env.VUE_APP_COURSE
             };
             jsConfig(test).then((response) => {
                 if (response.data.code == 'OK') {
@@ -115,7 +115,7 @@ export default {
                         appId: appId, // 必填，公众号的唯一标识，填自己的！
                         timestamp: timestamp, // 必填，生成签名的时间戳，刚才接口拿到的数据
                         nonceStr: nonceStr, // 必填，生成签名的随机串
-                        signature: signature, // 必填，签名，见附录1
+                        signature: signature, // 必填，签名，
                         jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
                     });
 
@@ -163,8 +163,8 @@ export default {
         if(this.$store.state.user.wxshare != 'wxHedan'){
             this.$store.commit('SET_WX', 'wxHedan');
         }
-        // this.Geneshares()
-        
+        this.Geneshares()
+     
     },
     beforeCreate() {
         let that = this;
